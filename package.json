@@ -12,8 +12,11 @@
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
+    "auth0-lock": "^11.30.4",
     "core-js": "^3.15.1",
+    "jwt-decode": "^3.1.2",
     "nuxt": "^2.15.7",
+    "query-string": "^4.3.4",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
