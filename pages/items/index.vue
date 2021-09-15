@@ -1,11 +1,21 @@
 <template>
-  <Settings></Settings>
+  <v-row>
+    <v-col>
+      <Item v-for="item in items" :key="item.id" :item="item" ></Item>
+    </v-col>
+  </v-row>
 </template>
+
 <script>
-import Settings from "../../components/Settings.vue"
+import Item from "../../components/Item.vue"
 export default {
   components: {
-    Settings,
+    Item
+  },
+  computed: {
+    items() {
+      return this.$store.state.item.list;
+    }
   },
 }
 </script>

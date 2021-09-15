@@ -34,7 +34,11 @@ const config = {
   css: [],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ['~/plugins/auth0.js'],
+  plugins: [
+    {src: '~/plugins/auth0.js'}, 
+    // サーバーサイドでは使用できないのでssrはfalseにすること
+    {src: '~/plugins/persistedstate.js'},
+  ],
 
   auth0: {
     domain: 'dev-w0-rzoqk.jp.auth0.com',
@@ -61,7 +65,7 @@ const config = {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: '/'
+    baseURL: '/',
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
@@ -87,8 +91,8 @@ const config = {
   build: {},
 
   generate: {
-    dir: './public'
-  }
+    dir: './public',
+  },
 }
 
 if(process.env.NODE_ENV === 'development'){

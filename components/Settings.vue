@@ -6,7 +6,7 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
               <v-icon left> mdi-pencil </v-icon>
-              設定
+              ユーザー設定
             </v-btn>
           </template>
           <v-card>
@@ -16,7 +16,7 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-text-field
                       label="ユーザーネーム*"
                       hint="落とし物を見つけた方にのみ表示するものです"
@@ -25,7 +25,7 @@
                       v-model="name"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                  <v-col cols="12">
                     <v-textarea
                       label="自己紹介*"
                       hint="特に公開はしません"
