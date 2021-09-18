@@ -1,9 +1,9 @@
 <template>
-  <v-contailner>
+  <v-container>
     <v-footer app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
-  </v-contailner>
+  </v-container>
 </template>
 
 <script>
