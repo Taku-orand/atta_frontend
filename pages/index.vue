@@ -24,6 +24,9 @@
 
 <script>
 export default {
+  mounted(){
+    this.$store.commit('setShowUserInfo',false)
+  },
   methods: {
     loggedIn() {
       return this.$auth0.isAuthenticated();

@@ -13,8 +13,8 @@ export const mutations = {
 }
 
 export const actions = {
-  async getItems({ commit }) {
-    await axios
+  getItems({ commit }) {
+    axios
       .get(
         `http://localhost:3000/api/v1/items`,
 
@@ -25,7 +25,6 @@ export const actions = {
       )
       .then((response) => {
         if (response.data.found) {
-          console.log(response.data.items)
           console.log('見つかりました。')
           commit('setItems', response.data.items)
         } else {
@@ -36,11 +35,11 @@ export const actions = {
         console.log(e)
       })
       .finally(() => {
-        // 特になし
+        
       })
   },
-  async postItem({ commit }, item) {
-    await this.$axios.$post(
+  postItem({ commit }, item) {
+    return this.$axios.$post(
       'http://localhost:3000/api/v1/items',
       item,
       {

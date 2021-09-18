@@ -4,7 +4,7 @@
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark v-bind="attrs" v-on="on">
+            <v-btn class="btn btn-lg btn-info shadow p-3 create-question-btn" color="primary" dark v-bind="attrs" v-on="on">
               <v-icon left> mdi-pencil </v-icon>
               アイテム追加
             </v-btn>
@@ -62,46 +62,46 @@ export default {
     }
   },
   methods: {
-    postItem() {
-      this.$store.dispatch('item/postItem',
-      {
-        item:{
+    resetUserForm(){
+      this.name = ""
+      this.content = ""
+    },
+    async postItem() {
+      const result = await this.$store.dispatch('item/postItem', {
+        item: {
           name: this.name,
           content: this.content,
-          qr_code: "aaaaa"
-        }
+          qr_code: 'aaaaa',
+        },
+      })
+      if(result.created){
+        this.resetUserForm()
+        this.dialog = false
+        this.$store.dispatch('item/getItems')
       }
-      )
-      //   const ret = await this.$axios
-      //   .$post(
-      //       'http://localhost:3000/api/v1/items',
-      //       {
-      //         item: {
-      //           name: this.name,
-      //           content: this.content,
-      //           qr_code: "aaaaa"
-      //         },
-      //       },
-      //       {},
-      //       {
-      //         headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-      //         withCredentials: true,
-      //       }
-      //     )
-      //     .then((response) => {
-      //       if (response.data.created) {
-      //         console.log('成功')
-      //         this.dialog = false
-      //       } else {
-      //         console.log('失敗')
-      //       }
-      //     })
-      //     .catch((e) => {
-      //       console.log(e)
-      //     })
-      //     console.log(ret)
-      // },
     },
   },
 }
 </script>
+
+
+<style scoped>
+
+.create-question-btn {
+  position: fixed;
+  right: 3rem;
+  bottom: 3rem;
+}
+@media screen and (max-width: 959px) {
+  /* 959px以下に適用されるCSS（タブレット用） */
+
+}
+@media screen and (max-width: 576px) {
+  /* 576px以下に適用されるCSS（スマホ用） */
+  .create-question-btn {
+    width: 50%;
+    font-size: 1.2rem;
+    right: 1rem;
+  }
+}
+</style>

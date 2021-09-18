@@ -18,20 +18,20 @@
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
+                      v-model="name"
                       label="ユーザーネーム*"
                       hint="落とし物を見つけた方にのみ表示するものです"
                       persistent-hint
                       required
-                      v-model="name"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-textarea
+                      v-model="introduction"
                       label="自己紹介*"
                       hint="特に公開はしません"
                       persistent-hint
                       required
-                      v-model="introduction"
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -84,10 +84,6 @@ export default {
           console.log("成功")
           this.dialog = false
         } else {
-          
-          console.log(this.name)
-          console.log(this.introduction)
-          console.log(this.$auth0.getIdToken())
           console.log("失敗")
         }
       })

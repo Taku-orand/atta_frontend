@@ -1,10 +1,6 @@
 <template>
   <v-app dark>
-    <v-app-bar fixed app>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <Settings></Settings>
-    </v-app-bar>
+    <Header v-if="showHeader"></Header>
 
     <v-main>
       <v-container>
@@ -12,29 +8,30 @@
       </v-container>
     </v-main>
 
-    <PostItem></PostItem>
-    <!-- <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer> -->
+    <Footer v-if="showFooter"></Footer>
   </v-app>
 </template>
 
 <script>
-import Settings from '../components/Settings.vue'
-import PostItem from "../components/PostItem.vue"
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
 
 export default {
   components: {
-    Settings,
-    PostItem,
+    Header,
+    Footer,
   },
   data() {
     return {
-      fixed: false,
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'AttA',
+    }
+  },
+  computed: {
+    showHeader() {
+      return this.$store.state.showHeader
+    },
+    showFooter(){
+      return this.$store.state.showFooter
     }
   },
 }
