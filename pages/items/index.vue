@@ -25,16 +25,10 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit('isLoggedIn')
     this.$store.commit('setShowUserInfo',true)
-    this.isLoggedIn()
     this.$store.dispatch('item/getItems')
   },
-  methods: {
-    isLoggedIn() {
-      if (!this.$auth0.isAuthenticated()) {
-        this.$router.replace('/')
-      }
-    },
-  },
+  methods: {},
 }
 </script>

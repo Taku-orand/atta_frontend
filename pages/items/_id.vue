@@ -26,6 +26,9 @@ export default {
       return this.code
     }
   },
+  mounted(){
+    this.$store.commit('isLoggedIn')
+  },
   methods: {
     make() {
       QRCode.toDataURL('http://localhost:3333/lost-items/'+this.$route.params.id, { width: 100 })
