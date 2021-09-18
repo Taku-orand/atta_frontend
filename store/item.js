@@ -39,4 +39,14 @@ export const actions = {
         // 特になし
       })
   },
+  async postItem({ commit }, item) {
+    await this.$axios.$post(
+      'http://localhost:3000/api/v1/items',
+      item,
+      {
+        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+        withCredentials: true,
+      }
+    )
+  },
 }

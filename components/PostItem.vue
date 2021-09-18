@@ -52,45 +52,55 @@
   </v-form>
 </template>
 <script>
-import axios from 'axios'
 export default {
   data() {
     return {
       dialog: false,
       name: '',
       content: '',
-      qr_code: ''
+      qr_code: '',
     }
   },
   methods: {
-    async postItem() {
-      await axios
-        .post(
-          'http://localhost:3000/api/v1/items',
-          {
-            item: {
-              name: this.name,
-              content: this.content,
-              qr_code: this.qr_code
-            },
-          },
-          {},
-          {
-            headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-            withCredentials: true,
-          }
-        )
-        .then((response) => {
-          if (response.data.created) {
-            console.log('成功')
-            this.dialog = false
-          } else {
-            console.log('失敗')
-          }
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+    postItem() {
+      this.$store.dispatch('item/postItem',
+      {
+        item:{
+          name: this.name,
+          content: this.content,
+          qr_code: "aaaaa"
+        }
+      }
+      )
+      //   const ret = await this.$axios
+      //   .$post(
+      //       'http://localhost:3000/api/v1/items',
+      //       {
+      //         item: {
+      //           name: this.name,
+      //           content: this.content,
+      //           qr_code: "aaaaa"
+      //         },
+      //       },
+      //       {},
+      //       {
+      //         headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+      //         withCredentials: true,
+      //       }
+      //     )
+      //     .then((response) => {
+      //       if (response.data.created) {
+      //         console.log('成功')
+      //         this.dialog = false
+      //       } else {
+      //         console.log('失敗')
+      //       }
+      //     })
+      //     .catch((e) => {
+      //       console.log(e)
+      //     })
+      //     console.log(ret)
+      // },
     },
   },
 }
