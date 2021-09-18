@@ -1,9 +1,6 @@
 <template>
   <v-app dark>
-    <v-app-bar
-      fixed
-      app
-    >
+    <v-app-bar fixed app>
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <Settings></Settings>
@@ -15,29 +12,30 @@
       </v-container>
     </v-main>
 
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
+    <PostItem></PostItem>
+    <!-- <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    </v-footer> -->
   </v-app>
 </template>
 
 <script>
-import Settings from "../components/Settings.vue"
+import Settings from '../components/Settings.vue'
+import PostItem from "../components/PostItem.vue"
+
 export default {
   components: {
     Settings,
+    PostItem,
   },
-  data () {
+  data() {
     return {
       fixed: false,
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'AttA'
+      title: 'AttA',
     }
-  }
+  },
 }
 </script>

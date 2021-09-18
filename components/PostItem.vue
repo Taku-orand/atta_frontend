@@ -6,32 +6,32 @@
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark v-bind="attrs" v-on="on">
               <v-icon left> mdi-pencil </v-icon>
-              ユーザー設定
+              アイテム追加
             </v-btn>
           </template>
           <v-card>
             <v-card-title>
-              <span class="text-h5">ユーザー情報</span>
+              <span class="text-h5">アイテム情報</span>
             </v-card-title>
             <v-card-text>
               <v-container>
                 <v-row>
                   <v-col cols="12">
                     <v-text-field
-                      label="ユーザーネーム*"
-                      hint="落とし物を見つけた方にのみ表示するものです"
+                      v-model="name"
+                      label="アイテムネーム*"
+                      hint="落とし物を見つけた方にのみ表示します"
                       persistent-hint
                       required
-                      v-model="name"
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <v-textarea
-                      label="自己紹介*"
+                      v-model="content"
+                      label="アイテム情報*"
                       hint="特に公開はしません"
                       persistent-hint
                       required
-                      v-model="introduction"
                     ></v-textarea>
                   </v-col>
                 </v-row>
@@ -43,9 +43,7 @@
               <v-btn color="blue darken-1" text @click="dialog = false">
                 閉じる
               </v-btn>
-              <v-btn color="blue darken-1" text @click="saveSettings">
-                保存
-              </v-btn>
+              <v-btn color="blue darken-1" text @click="postItem"> 追加 </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -54,48 +52,46 @@
   </v-form>
 </template>
 <script>
-import axios from "axios"
+import axios from 'axios'
 export default {
-  data(){
+  data() {
     return {
       dialog: false,
-      name: "",
-      introduction: ""
+      name: '',
+      content: '',
+      qr_code: ''
     }
   },
-
   methods: {
-    async saveSettings(){
+    async postItem() {
       await axios
-      .patch('http://localhost:3000/api/v1/users/update',
-        {
-          user: {
-            name: this.name,
-            introduction: this.introduction
+        .post(
+          'http://localhost:3000/api/v1/items',
+          {
+            item: {
+              name: this.name,
+              content: this.content,
+              qr_code: this.qr_code
+            },
+          },
+          {},
+          {
+            headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+            withCredentials: true,
           }
-        },
-        { 
-          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-          withCredentials: true 
-        }
-      )
-      .then((response) => {
-        if(response.data.updated){
-          console.log("成功")
-          this.dialog = false
-        } else {
-          
-          console.log(this.name)
-          console.log(this.introduction)
-          console.log(this.$auth0.getIdToken())
-          console.log("失敗")
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      });
-    }
-  }
+        )
+        .then((response) => {
+          if (response.data.created) {
+            console.log('成功')
+            this.dialog = false
+          } else {
+            console.log('失敗')
+          }
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    },
+  },
 }
 </script>
-
