@@ -1,8 +1,15 @@
 export const state = () => ({
   showHeader: true,
   showFooter: true,
-  showUserInfo: true
+  showUserInfo: true,
+  settings_dialog: false
 })
+
+export const getters = {
+  settingsDialogGetter(state) {
+    return state.settings_dialog
+  },
+}
 
 export const mutations = {
   setLogin(state, login) {
@@ -22,4 +29,7 @@ export const mutations = {
       this.$router.replace('/')
     }
   },
+  setSettingsDialog(state, boolean){
+    state.settings_dialog = boolean
+  }
 }

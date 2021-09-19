@@ -20,15 +20,26 @@ export default {
     PostItem,
   },
   computed: {
-    items(){
+    items() {
       return this.$store.state.item.items
-    }
+    },
   },
   mounted() {
     this.$store.commit('isLoggedIn')
-    this.$store.commit('setShowUserInfo',true)
+    this.$store.commit('setShowUserInfo', true)
+    this.$store.dispatch('user/getUser')
     this.$store.dispatch('item/getItems')
   },
-  methods: {},
+  updated(){
+    this.isFirstLogin()
+  },
+  methods: {
+    isFirstLogin(){
+      if(this.$store.state.user.user.initial){
+        const userInfo = document.getElementById("userInfo")
+        userInfo.click()
+      }
+    }
+  },
 }
 </script>

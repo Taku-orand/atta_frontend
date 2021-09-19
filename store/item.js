@@ -34,18 +34,11 @@ export const actions = {
       .catch((e) => {
         console.log(e)
       })
-      .finally(() => {
-        
-      })
   },
   postItem({ commit }, item) {
-    return this.$axios.$post(
-      'http://localhost:3000/api/v1/items',
-      item,
-      {
-        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-        withCredentials: true,
-      }
-    )
+    return this.$axios.$post('http://localhost:3000/api/v1/items', item, {
+      headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+      withCredentials: true,
+    })
   },
 }
