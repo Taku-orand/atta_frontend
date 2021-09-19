@@ -1,10 +1,8 @@
 <template>
-  <v-container>
-    {{$route.params.url}}
-  </v-container>
+  <p>リダイレクト中です。</p>
 </template>
 <script>
 export default {
-
+  middleware:'redirectToLostItem',
 }
 </script>

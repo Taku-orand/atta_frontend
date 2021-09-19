@@ -37,7 +37,7 @@ const config = {
   plugins: [
     {src: '~/plugins/auth0.js'}, 
     // サーバーサイドでは使用できないのでssrはfalseにすること
-    {src: '~/plugins/persistedstate.js'},
+    {src: '~/plugins/persistedstate.js', ssr:false},
   ],
 
   auth0: {
