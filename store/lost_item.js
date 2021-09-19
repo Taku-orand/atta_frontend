@@ -4,7 +4,11 @@ export const state = () => ({
   lostItemData: {},
 })
 
-export const getters = {}
+export const getters = {
+  lostItemDataGetter(state){
+    return state.lostItemData
+  }
+}
 
 export const mutations = {
   setLostItem(state, lostItemData) {
