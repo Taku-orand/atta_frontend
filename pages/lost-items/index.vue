@@ -25,6 +25,7 @@
       <v-row row justify-center align-center>
         <v-col cols="12" class="d-flex justify-center">
           <v-text-field
+            v-model="foundLocation"
             label="見つけた場所"
             class="centered-input"
             :hide-details="true"
@@ -33,6 +34,7 @@
         </v-col>
         <v-col cols="12" class="d-flex justify-center">
           <v-text-field
+          v-model="itemDestination"
             label="落とし物の現在地"
             class="centered-input"
             :hide-details="true"
@@ -53,16 +55,11 @@ export default {
       userName: '',
       itemName: '',
       dialog: true,
+      foundLocation: '',
+      itemDestination: '',
+      email: '',
     }
   },
-  computed: {},
-  // watch: {
-  //   dialog(val) {
-  //     if (!val) return
-
-  //     setTimeout(() => this.showUserInfo(), 4000)
-  //   },
-  // },
   mounted() {
     this.$store.commit('setShowUserInfo', false)
     this.reload()
@@ -73,6 +70,7 @@ export default {
       const LostItemData = this.$store.getters['lost_item/lostItemDataGetter']
       this.userName = LostItemData.user.name
       this.itemName = LostItemData.item.name
+      this.email = LostItemData.user.email
       this.dialog = false
     },
     async reload() {
@@ -84,7 +82,15 @@ export default {
       )
     },
     postNotification(){
-
+      this.$store.dispatch('lost_item/postNotification',{
+        lostItemData: {
+          foundLocation: this.foundLocation,
+          itemDestination: this.itemDestination,
+          email: this.email,
+          user_name: this.userName,
+          item_name: this.itemName
+        },
+      })
     }
   },
 }
