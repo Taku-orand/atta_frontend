@@ -1,10 +1,28 @@
 <template>
   <v-form>
+      <v-dialog v-model="loadingDialog" hide-overlay persistent width="300">
+        <v-card color="primary" dark>
+          <v-card-text>
+            情報を取得しています。
+            <v-progress-linear
+              indeterminate
+              color="white"
+              class="mb-0"
+            ></v-progress-linear>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     <v-container>
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn class="btn btn-lg btn-info shadow p-3 create-question-btn" color="primary" dark v-bind="attrs" v-on="on">
+          <template #activator="{ on, attrs }">
+            <v-btn
+              class="btn btn-lg btn-info shadow p-3 create-question-btn"
+              color="primary"
+              dark
+              v-bind="attrs"
+              v-on="on"
+            >
               <v-icon left> mdi-pencil </v-icon>
               アイテム追加
             </v-btn>
@@ -58,35 +76,44 @@ export default {
       dialog: false,
       name: '',
       content: '',
-      qr_code: '',
+      loadingDialog: false,
     }
   },
+  // mounted() {
+  //   this.loadingDialog = true
+  //   setTimeout(() => (this.loadingDialog = false), 5000)
+  // },
   methods: {
-    resetUserForm(){
-      this.name = ""
-      this.content = ""
+    resetItemForm() {
+      this.name = ''
+      this.content = ''
     },
     async postItem() {
+      this.loadingOnOff()
       const result = await this.$store.dispatch('item/postItem', {
         item: {
           name: this.name,
           content: this.content,
-          qr_code: 'aaaaa',
+          qr_code: "null"
         },
       })
-      if(result.created){
-        this.resetUserForm()
-        this.dialog = false
-        this.$store.dispatch('item/getItems')
+      if (result.created) {
+        this.resetItemForm()
+        setTimeout(() => this.loadingOnOff(), 2000)
+        await this.$store.dispatch('item/getItems')
+        this.$router.push('/items/' + result.id)
+      } else {
+        this.loadingOnOff()
       }
     },
+    loadingOnOff(){
+      this.loadingDialog = !this.loadingDialog
+    }
   },
 }
 </script>
 
-
 <style scoped>
-
 .create-question-btn {
   position: fixed;
   right: 3rem;
@@ -94,7 +121,6 @@ export default {
 }
 @media screen and (max-width: 959px) {
   /* 959px以下に適用されるCSS（タブレット用） */
-
 }
 @media screen and (max-width: 576px) {
   /* 576px以下に適用されるCSS（スマホ用） */

@@ -7,8 +7,6 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-btn @click="make"> QRコード生成 </v-btn>
-    <img v-if="code ? true : false" :src=code>
   </v-container>
 </template>
 <script>
@@ -18,30 +16,25 @@ export default {
   data() {
     return {
       code: "",
-      isMade: false
-    }
-  },
-  computed: {
-    qrcode(){
-      return this.code
     }
   },
   mounted(){
     this.$store.commit('isLoggedIn')
   },
   methods: {
-    make() {
-      QRCode.toDataURL('http://localhost:3333/lost-items/'+this.$route.params.id, { width: 100 })
-        .then((code) => {
-          // コード(URLスキーム)が生成されるので、imgタグのsrc=の中に値を入れましょう
-          console.log(code)
-          this.code = code
-          this.isMade = true
+    createQRCode() {
+      QRCode.toDataURL(
+        `http://localhost:3333/lost-items/${this.$route.params.id}`,
+        { width: 300 }
+      )
+        .then((qrCode) => {
+          // QRcodeをimgタグのsrcに入れる
+          this.qrCode = qrCode
         })
         .catch((err) => {
           console.error(err)
         })
     },
-  },
+  }
 }
 </script>
