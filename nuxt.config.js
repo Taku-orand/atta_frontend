@@ -1,6 +1,5 @@
-// import colors from 'vuetify/es5/util/colors'
-
-const config = {
+import colors from 'vuetify/es5/util/colors'
+export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
@@ -35,9 +34,10 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    {src: '~/plugins/auth0.js'}, 
+    { src: '~/plugins/auth0.js' },
     // サーバーサイドでは使用できないのでssrはfalseにすること
-    {src: '~/plugins/persistedstate.js', ssr:false},
+    { src: '~/plugins/persistedstate.js', ssr: false },
+    { src: '~/plugins/vee-validate.js' },
   ],
 
   auth0: {
@@ -61,6 +61,20 @@ const config = {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/proxy',
+    [
+      'nuxt-i18n',
+      {
+        locales: [
+          { code: 'ja', iso: 'ja_JP' },
+          { code: 'en', iso: 'en-US' },
+        ],
+        defaultLocale: 'ja',
+        vueI18n: {
+          fallbackLocale: 'ja',
+        },
+        vueI18nLoader: true,
+      },
+    ],
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -69,36 +83,30 @@ const config = {
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
-  // vuetify: {
-  //   customVariables: ['~/assets/variables.scss'],
-  //   theme: {
-  //     dark: true,
-  //     themes: {
-  //       dark: {
-  //         primary: colors.blue.darken2,
-  //         accent: colors.grey.darken3,
-  //         secondary: colors.amber.darken3,
-  //         info: colors.teal.lighten1,
-  //         warning: colors.amber.base,
-  //         error: colors.deepOrange.accent4,
-  //         success: colors.green.accent3,
-  //       },
-  //     },
-  //   },
-  // },
+  vuetify: {
+    customVariables: ['~/assets/variables.scss'],
+    theme: {
+      // dark: true,
+      themes: {
+        dark: {
+          primary: colors.blue.darken2,
+          accent: colors.grey.darken3,
+          secondary: colors.amber.darken3,
+          info: colors.teal.lighten1,
+          warning: colors.amber.base,
+          error: colors.deepOrange.accent4,
+          success: colors.green.accent3,
+        },
+      },
+    },
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    transpile: ['vee-validate/dist/rules'],
+  },
 
   generate: {
     dir: './public',
   },
 }
-
-if(process.env.NODE_ENV === 'development'){
-  config.proxy = {
-    '/api': 'http://localhost:3000'
-  }
-}
-
-module.exports = config

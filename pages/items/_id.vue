@@ -39,13 +39,14 @@ export default {
       itemContent: '',
     }
   },
-  async fetch({store, params}) {
+  async fetch({ store, params }) {
+    await store.dispatch('user/getUser')
     await store.dispatch('item/getItem', params.id)
   },
   computed: {
-    item(){
+    item() {
       return this.$store.getters['item/itemGetter']
-    }
+    },
   },
   // created() {
   //   this.$store.dispatch('item/getItem', this.$route.params.id)

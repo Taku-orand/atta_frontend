@@ -2,7 +2,7 @@ export const state = () => ({
   showHeader: true,
   showFooter: true,
   showUserInfo: true,
-  settings_dialog: false
+  settings_dialog: false,
 })
 
 export const getters = {
@@ -29,7 +29,20 @@ export const mutations = {
       this.$router.replace('/')
     }
   },
-  setSettingsDialog(state, boolean){
+  setSettingsDialog(state, boolean) {
     state.settings_dialog = boolean
-  }
+  },
+}
+
+export const actions = {
+  saveUserInfo({ commit }, user) {
+    try {
+      return this.$axios.$patch('http://localhost:3000/api/v1/users', user, {
+        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+        withCredentials: true,
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  },
 }
