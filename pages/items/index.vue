@@ -19,27 +19,31 @@ export default {
     Item,
     PostItem,
   },
+  async fetch({ store }) {
+    await store.dispatch('user/getUser')
+    await store.dispatch('item/getItems')
+  },
   computed: {
     items() {
-      return this.$store.state.item.items
+      return this.$store.getters['item/itemsGetter']
     },
   },
-  mounted() {
+  created() {
     this.$store.commit('isLoggedIn')
-    this.$store.commit('setShowUserInfo', true)
-    this.$store.dispatch('user/getUser')
-    this.$store.dispatch('item/getItems')
   },
-  updated(){
+  mounted() {
+    this.$store.commit('setShowUserInfo', true)
+  },
+  updated() {
     this.isFirstLogin()
   },
   methods: {
-    isFirstLogin(){
-      if(this.$store.state.user.user.initial){
-        const userInfo = document.getElementById("userInfo")
+    isFirstLogin() {
+      if (this.$store.state.user.user.initial) {
+        const userInfo = document.getElementById('userInfo')
         userInfo.click()
       }
-    }
+    },
   },
 }
 </script>

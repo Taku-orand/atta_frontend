@@ -4,8 +4,8 @@
     <v-row class="justify-center">
       <v-col>
         <v-card>
-          名前：{{itemName}}<br/>
-          内容：{{itemContent}}
+          名前：{{ item.name }}<br />
+          内容：{{ item.content }}
         </v-card>
       </v-col>
     </v-row>
@@ -28,6 +28,7 @@
 </template>
 <script>
 import QRCode from 'qrcode'
+
 export default {
   data() {
     return {
@@ -35,16 +36,28 @@ export default {
       isCreated: false,
       wid: 100,
       itemName: '',
-      itemContent: ''
+      itemContent: '',
     }
   },
+  async fetch({store, params}) {
+    await store.dispatch('item/getItem', params.id)
+  },
+  computed: {
+    item(){
+      return this.$store.getters['item/itemGetter']
+    }
+  },
+  // created() {
+  //   this.$store.dispatch('item/getItem', this.$route.params.id)
+  // },
   mounted() {
     this.$store.commit('isLoggedIn')
-    this.$store.dispatch('item/getItem',this.$route.params.id)
+    // this.$store.dispatch('item/getItem',this.$route.params.id)
     this.getItemFromStore()
   },
+
   methods: {
-    getItemFromStore(){
+    getItemFromStore() {
       const Item = this.$store.getters['item/itemGetter']
       this.itemName = Item.name
       this.itemContent = Item.content

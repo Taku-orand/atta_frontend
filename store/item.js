@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export const state = () => ({
   items: [],
   item: {},
@@ -9,6 +7,9 @@ export const getters = {
   itemGetter(state) {
     return state.item
   },
+  itemsGetter(state){
+    return state.items
+  }
 }
 
 export const mutations = {
@@ -21,9 +22,9 @@ export const mutations = {
 }
 
 export const actions = {
-  getItems({ commit }) {
-    axios
-      .get(
+  async getItems({ commit }) {
+    try {
+      const Items = await this.$axios.$get(
         `http://localhost:3000/api/v1/items`,
 
         {
@@ -31,27 +32,28 @@ export const actions = {
           withCredentials: true,
         }
       )
-      .then((response) => {
-        if (response.data.found) {
-          console.log('見つかりました。')
-          commit('setItems', response.data.items)
-        } else {
-          console.log('見つかりませんでした。')
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+      commit('setItems', Items.items)
+    } catch (e) {
+      console.log(e)
+    }
   },
   async postItem({ commit }, item) {
-    return await this.$axios.$post('http://localhost:3000/api/v1/items', item, {
-      headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-      withCredentials: true,
-    })
+    try {
+      return await this.$axios.$post(
+        'http://localhost:3000/api/v1/items',
+        item,
+        {
+          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+          withCredentials: true,
+        }
+      )
+    } catch (e) {
+      console.log(e)
+    }
   },
-  getItem({ commit }, itemId) {
-    axios
-      .get(
+  async getItem({ commit }, itemId) {
+    try {
+      const Item = await this.$axios.$get(
         `http://localhost:3000/api/v1/items/${itemId}`,
 
         {
@@ -59,16 +61,9 @@ export const actions = {
           withCredentials: true,
         }
       )
-      .then((response) => {
-        if (response.data.found) {
-          console.log('見つかりました。')
-          commit('setItem', response.data.item)
-        } else {
-          console.log('見つかりませんでした。')
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+      commit('setItem', Item.item)
+    } catch (e) {
+      console.log(e)
+    }
   },
 }
