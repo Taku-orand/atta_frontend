@@ -63,7 +63,7 @@ export default {
   mounted() {
     this.$store.commit('setShowUserInfo', false)
     this.reload()
-    setTimeout(() => this.showUserInfo(), 1000)
+    setTimeout(() => this.showUserInfo(), 2000)
   },
   methods: {
     showUserInfo() {
