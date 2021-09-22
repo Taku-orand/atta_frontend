@@ -1,5 +1,10 @@
 <template>
   <v-form>
+    <Notification
+      :msg="dlg.msg"
+      :is-open="dlg.isOpen"
+      :mode="dlg.mode"
+    ></Notification>
     <v-container>
       <v-row justify="center">
         <v-dialog v-model="dialog" :persistent="!isValid" max-width="600px">
@@ -98,7 +103,11 @@
   </v-form>
 </template>
 <script>
+import Notification from './Notification.vue'
 export default {
+  components: {
+    Notification,
+  },
   data() {
     return {
       isValid: false,
@@ -107,6 +116,17 @@ export default {
       email: '',
       initial_email: '',
       introduction: '',
+      dlg: {
+        msg: '',
+        isOpen: false,
+        mode: '',
+        doYes() {
+          this.dlg.isOpen = false
+        },
+        doNo() {
+          this.dlg.isOpen = false
+        },
+      },
     }
   },
   computed: {
@@ -153,10 +173,20 @@ export default {
           },
         })
         if (Response.updated) {
+          this.dlg.msg = '設定が完了しました.'
+          this.dlg.mode = 'success'
+          this.dlg.isOpen = true
           await this.$store.dispatch('user/getUser')
           this.closeDialog()
+        } else {
+          this.dlg.msg = '保存に失敗しました. もう一度お試しください.'
+          this.dlg.mode = 'error'
+          this.dlg.isOpen = true
+          this.dlg.mode = 'error'
         }
-        // エラーメッセージ
+        setTimeout(() => {
+          this.dlg.isOpen = false
+        }, 800)
       })
     },
     async userInfoIsChanged() {
