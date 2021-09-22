@@ -56,7 +56,7 @@ export default {
   methods: {
     createQRCode(wid) {
       QRCode.toDataURL(
-        `http://localhost:3333/lost-items/${this.$route.params.id}`,
+        `http://localhost:3333/lost-items/${this.$route.params.id}/${this._uid}`,
         { width: wid }
       )
         .then(async (qrCode) => {
@@ -64,7 +64,7 @@ export default {
           this.qrCode = qrCode
           await this.$store.dispatch('item/updateItem', {
             itemId: this.$route.params.id,
-            item: { qr_code: this.qrCode },
+            item: { qr_code: this.qrCode, isValid: true, verification_id: this._uid },
           })
           await this.$store.dispatch('item/getItem', this.$route.params.id)
         })
