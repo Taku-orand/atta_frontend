@@ -7,9 +7,9 @@ export const getters = {
   itemGetter(state) {
     return state.item
   },
-  itemsGetter(state){
+  itemsGetter(state) {
     return state.items
-  }
+  },
 }
 
 export const mutations = {
@@ -37,16 +37,12 @@ export const actions = {
       console.log(e)
     }
   },
-  async postItem({ commit }, item) {
+  postItem({ commit }, item) {
     try {
-      return await this.$axios.$post(
-        'http://localhost:3000/api/v1/items',
-        item,
-        {
-          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-          withCredentials: true,
-        }
-      )
+      return this.$axios.$post('http://localhost:3000/api/v1/items', item, {
+        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+        withCredentials: true,
+      })
     } catch (e) {
       console.log(e)
     }
@@ -62,6 +58,23 @@ export const actions = {
         }
       )
       commit('setItem', Item.item)
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  async updateItem({ commit }, { itemId, item }) {
+    try {
+      const Item = await this.$axios.$patch(
+        `http://localhost:3000/api/v1/items/${itemId}`,
+        { item },
+        {
+          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+          withCredentials: true,
+        }
+      )
+      if (Item.updated) {
+        console.log('成功')
+      }
     } catch (e) {
       console.log(e)
     }

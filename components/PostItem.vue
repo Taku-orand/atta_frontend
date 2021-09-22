@@ -1,17 +1,17 @@
 <template>
   <v-form>
-      <v-dialog v-model="loadingDialog" hide-overlay persistent width="300">
-        <v-card color="primary" dark>
-          <v-card-text>
-            情報を取得しています。
-            <v-progress-linear
-              indeterminate
-              color="white"
-              class="mb-0"
-            ></v-progress-linear>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+    <v-dialog v-model="loadingDialog" hide-overlay persistent width="300">
+      <v-card color="primary" dark>
+        <v-card-text>
+          情報を取得しています。
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-container>
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="600px">
@@ -79,36 +79,30 @@ export default {
       loadingDialog: false,
     }
   },
-  // mounted() {
-  //   this.loadingDialog = true
-  //   setTimeout(() => (this.loadingDialog = false), 5000)
-  // },
   methods: {
     resetItemForm() {
       this.name = ''
       this.content = ''
     },
     async postItem() {
-      this.loadingOnOff()
+      // this.loadingOnOff()
       const result = await this.$store.dispatch('item/postItem', {
         item: {
           name: this.name,
           content: this.content,
-          qr_code: "null"
         },
       })
       if (result.created) {
         this.resetItemForm()
-        setTimeout(() => this.loadingOnOff(), 2000)
         await this.$store.dispatch('item/getItems')
         this.$router.push('/items/' + result.id)
       } else {
-        this.loadingOnOff()
+        // this.loadingOnOff()
       }
     },
-    loadingOnOff(){
-      this.loadingDialog = !this.loadingDialog
-    }
+    // loadingOnOff(){
+    //   this.loadingDialog = !this.loadingDialog
+    // }
   },
 }
 </script>

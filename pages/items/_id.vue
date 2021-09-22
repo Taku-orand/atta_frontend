@@ -22,7 +22,9 @@
 
     <!-- QRCODE -->
     <v-row class="justify-center">
-      <div v-if="isCreated"><img :src="qrCode" /></div>
+      <div v-if="item.qr_code">
+        <img :src="item.qr_code" />
+      </div>
     </v-row>
   </v-container>
 </template>
@@ -35,8 +37,6 @@ export default {
       qrCode: '',
       isCreated: false,
       wid: 100,
-      itemName: '',
-      itemContent: '',
     }
   },
   async fetch({ store, params }) {
@@ -48,31 +48,25 @@ export default {
       return this.$store.getters['item/itemGetter']
     },
   },
-  // created() {
-  //   this.$store.dispatch('item/getItem', this.$route.params.id)
-  // },
+
   mounted() {
     this.$store.commit('isLoggedIn')
-    // this.$store.dispatch('item/getItem',this.$route.params.id)
-    this.getItemFromStore()
   },
 
   methods: {
-    getItemFromStore() {
-      const Item = this.$store.getters['item/itemGetter']
-      this.itemName = Item.name
-      this.itemContent = Item.content
-    },
     createQRCode(wid) {
       QRCode.toDataURL(
         `http://localhost:3333/lost-items/${this.$route.params.id}`,
         { width: wid }
       )
-        .then((qrCode) => {
+        .then(async (qrCode) => {
           // QRcodeをimgタグのsrcに入れる
           this.qrCode = qrCode
-          this.isCreated = true
-          console.log(this.qrCode)
+          await this.$store.dispatch('item/updateItem', {
+            itemId: this.$route.params.id,
+            item: { qr_code: this.qrCode },
+          })
+          await this.$store.dispatch('item/getItem', this.$route.params.id)
         })
         .catch((err) => {
           console.error(err)
