@@ -62,7 +62,10 @@
                             required
                           ></v-text-field>
                         </ValidationProvider>
-                        <p v-show="!isValid" @click="setOriginEmail">
+                        <p
+                          v-show="userEmail != initial_email"
+                          @click="setOriginEmail"
+                        >
                           <span class="blue--text">{{ initial_email }}</span
                           ><v-icon size="1.25rem"
                             >mdi-cursor-default-click-outline</v-icon
