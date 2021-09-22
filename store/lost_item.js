@@ -36,6 +36,7 @@ export const actions = {
       })
   },
   postNotification({ commit }, lostItemData) {
+    // indexjsに移動
     axios
       .post(
         `http://localhost:3000/api/v1/lost_items`,
@@ -54,5 +55,13 @@ export const actions = {
       .catch((e) => {
         console.log(e)
       })
+  },
+  isValidQRCode({ commit }, params) {
+    console.log({ item: { id: params.id, verification_id: params.vid } })
+
+    return this.$axios.$post(
+      `http://localhost:3000/api/v1/lost_items/verificate_qrcode`,
+      {item: { id: params.id, verification_id: params.vid }}
+    )
   },
 }
