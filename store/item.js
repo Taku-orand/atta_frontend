@@ -73,7 +73,7 @@ export const actions = {
         }
       )
       if (Item.updated) {
-        // 成功
+        commit('setItem', Item.item)
       }
     } catch (e) {
       console.log(e)
