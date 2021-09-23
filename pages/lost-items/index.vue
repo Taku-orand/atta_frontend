@@ -257,6 +257,8 @@ export default {
             foundLocation: this.foundLocation,
             itemDestination: this.itemDestination,
             itemDestinationDetails: this.itemDestinationDetails,
+            mapLocationLat: this.maplocation.lat,
+            mapLocationLng: this.maplocation.lng,
             email: this.lost_item.user.email,
             user_name: this.lost_item.user.name,
             item_name: this.lost_item.item.name,
