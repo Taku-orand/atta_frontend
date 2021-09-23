@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const { VUE_APP_GOOGLE_API_KEY } = process.env
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -111,5 +112,9 @@ export default {
 
   generate: {
     dir: './public',
+  },
+
+  env: {
+    VUE_APP_GOOGLE_API_KEY,
   },
 }

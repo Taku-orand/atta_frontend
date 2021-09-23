@@ -25,10 +25,10 @@ export const actions = {
       })
       .then((response) => {
         if (response.data.found) {
-          console.log('見つかりました。')
+          // 見つかりました。
           commit('setUser', response.data.user)
         } else {
-          console.log('見つかりませんでした。')
+          // 見つかりませんでした。
         }
       })
       .catch((e) => {

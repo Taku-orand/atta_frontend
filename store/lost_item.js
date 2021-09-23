@@ -25,10 +25,10 @@ export const actions = {
       })
       .then((response) => {
         if (response.data.found) {
-          console.log('見つかりました。')
+          // 見つかりました。
           commit('setLostItem', response.data.lostItemData)
         } else {
-          console.log('見つかりませんでした。')
+          // 見つかりませんでした。
         }
       })
       .catch((e) => {
@@ -47,9 +47,9 @@ export const actions = {
       )
       .then((response) => {
         if (response.data.created) {
-          console.log('通知成功')
+          // 通知成功
         } else {
-          console.log('通知失敗')
+          // 通知失敗
         }
       })
       .catch((e) => {
@@ -57,8 +57,6 @@ export const actions = {
       })
   },
   isValidQRCode({ commit }, params) {
-    console.log({ item: { id: params.id, verification_id: params.vid } })
-
     return this.$axios.$post(
       `http://localhost:3000/api/v1/lost_items/verificate_qrcode`,
       {item: { id: params.id, verification_id: params.vid }}

@@ -32,13 +32,11 @@ export default {
       return this.$auth0.isAuthenticated();
     },
     async ping() {
-      const ret = await this.$axios.$get("/api/v1/ping");
-      console.log(ret);
+      await this.$axios.$get("/api/v1/ping");
     },
     async secured() {
-      const ret = await this.$axios.$get('/api/v1/secured',
+      await this.$axios.$get('/api/v1/secured',
         { headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() }});
-      console.log(ret)
     }
   }
 };
