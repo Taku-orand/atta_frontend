@@ -30,6 +30,27 @@
           />
         </v-col>
       </v-row>
+      <v-row justify="center" align="center">
+        <v-col cols="12" sm="8" md="6">
+          <v-card>
+            <GmapMap
+              map-type-id="roadmap"
+              :center="maplocation"
+              :zoom="zoom"
+              :style="styleMap"
+              :options="mapOptions"
+            >
+              <GmapMarker
+                :title="marker.title"
+                :position="marker.position"
+                :clickable="true"
+                :draggable="false"
+                :icon="marker.pinicon"
+              />
+            </GmapMap>
+          </v-card>
+        </v-col>
+      </v-row>
       <v-row justify="end">
         <v-btn @click="postNotification"
           ><v-icon left>mdi-account-arrow-left</v-icon>持ち主に知らせる!</v-btn
@@ -44,6 +65,20 @@ export default {
     return {
       foundLocation: '',
       itemDestination: '',
+      maplocation: { lng: 0, lat: 0 },
+      zoom: 15,
+      styleMap: {
+        width: '100%',
+        height: '400px',
+      },
+      mapOptions: {
+        streetViewControl: false,
+        styles: [],
+      },
+      marker:{
+        title: '忘れ物場所',
+        position: { lat: 0, lng: 0 },
+      }
     }
   },
   async fetch({ store }) {
@@ -59,10 +94,22 @@ export default {
       return this.$store.getters['lost_item/lostItemDataGetter']
     },
   },
-  mounted() {
+  async mounted() {
+    const currentPosTmp = await this.getCurrentPosition()
+    const currentPos = {
+      lat: currentPosTmp.coords.latitude,
+      lng: currentPosTmp.coords.longitude,
+    }
+    this.marker.position = currentPos
+    this.maplocation = currentPos
     this.$store.commit('setShowUserInfo', false)
   },
   methods: {
+    getCurrentPosition() {
+      return new Promise(function (resolve, reject) {
+        navigator.geolocation.getCurrentPosition(resolve, reject)
+      })
+    },
     postNotification() {
       this.$store.dispatch('lost_item/postNotification', {
         lostItemData: {

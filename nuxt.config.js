@@ -38,6 +38,7 @@ export default {
     // サーバーサイドでは使用できないのでssrはfalseにすること
     { src: '~/plugins/persistedstate.js', ssr: false },
     { src: '~/plugins/vee-validate.js' },
+    { src: '~/plugins/vue2-google-maps.js' },
   ],
 
   auth0: {
@@ -103,7 +104,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['vee-validate/dist/rules'],
+    extend(config, ctx) {},
+    vendor: ['vue2-google-maps'],
+    transpile: [/^vue2-google-maps($|\/)/, 'vee-validate/dist/rules'],
   },
 
   generate: {
