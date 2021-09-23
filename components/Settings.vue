@@ -123,12 +123,6 @@ export default {
         msg: '',
         isOpen: false,
         mode: '',
-        doYes() {
-          this.dlg.isOpen = false
-        },
-        doNo() {
-          this.dlg.isOpen = false
-        },
       },
     }
   },
