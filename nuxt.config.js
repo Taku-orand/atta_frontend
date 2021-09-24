@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
-const { VUE_APP_GOOGLE_API_KEY, ATTA_BACKEND } = process.env
+const { VUE_APP_GOOGLE_API_KEY, VUE_APP_ATTA_BACKEND, VUE_APP_ATTA_FRONTEND } =
+  process.env
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -116,6 +117,7 @@ export default {
 
   env: {
     VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
-    ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND
+    ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+    VUE_APP_ATTA_FRONTEND: process.env.VUE_APP_ATTA_FRONTEND,
   },
 }
