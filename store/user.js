@@ -19,7 +19,7 @@ export const mutations = {
 export const actions = {
   async getUser({ commit }) {
     await axios
-      .get(process.env.VUE_APP_ATTA_BACKEND+`/api/v1/users`, {
+      .get(process.env.ATTA_BACKEND+`/api/v1/users`, {
         headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
         withCredentials: true,
       })

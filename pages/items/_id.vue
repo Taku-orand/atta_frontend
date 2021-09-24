@@ -121,7 +121,7 @@ export default {
     },
     createQRCode(wid) {
       QRCode.toDataURL(
-        process.env.VUE_APP_ATTA_BACKEND+`/lost-items/${this.$route.params.id}/${this._uid}`,
+        process.env.ATTA_BACKEND+`/lost-items/${this.$route.params.id}/${this._uid}`,
         { width: wid }
       )
         .then(async (qrCode) => {
