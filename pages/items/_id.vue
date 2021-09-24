@@ -31,6 +31,7 @@
           </div>
           <div v-if="!edit">
             <v-btn small @click="editItem">編集</v-btn>
+            <v-btn small class="error" @click="deleteItem">削除</v-btn>
           </div>
           <div v-if="edit">
             <v-row row justify-end align-end>
@@ -54,13 +55,15 @@
         <v-text-field v-model="wid" label="サイズ" height="17"></v-text-field>
       </v-col>
       <v-col cols="4">
-        <v-btn class="mr-5" @click="createQRCode(wid)">QRCodeを作成</v-btn>
+        <v-btn class="mr-5" @click="createQRCode(wid)">
+          QRCodeを<span v-if="item.qr_code == 'null'">作成</span><span v-else>アップデート</span>
+        </v-btn>
       </v-col>
     </v-row>
 
     <!-- QRCODE -->
     <v-row class="justify-center">
-      <div v-if="item.qr_code">
+      <div v-if="item.qr_code !== 'null'">
         <img :src="item.qr_code" />
       </div>
     </v-row>
@@ -95,6 +98,10 @@ export default {
   },
 
   methods: {
+    deleteItem(){
+      this.$store.dispatch('item/deleteItem', this.$route.params.id)
+      this.$router.push('/items')
+    },
     async updateItem() {
       await this.$store.dispatch('item/updateItem', {
         itemId: this.$route.params.id,
