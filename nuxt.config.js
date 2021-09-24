@@ -116,6 +116,6 @@ export default {
 
   env: {
     VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
-    ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND
+    ATTA_BACKEND: process.env.ATTA_BACKEND
   },
 }
