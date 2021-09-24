@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev2": "PORT=3333 nuxt",
     "dev": "nuxt",
     "heroku-postbuild": "npm run build",
     "build": "nuxt build",
