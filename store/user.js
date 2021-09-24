@@ -5,21 +5,21 @@ export const state = () => ({
 })
 
 export const getters = {
-  userGetter(state){
+  userGetter(state) {
     return state.user
-  }
+  },
 }
 
 export const mutations = {
-  setUser(state, user){
+  setUser(state, user) {
     state.user = user
-  }
+  },
 }
 
 export const actions = {
   async getUser({ commit }) {
     await axios
-      .get(`http://localhost:3000/api/v1/users`, {
+      .get(process.env.ATTA_BACKEND+`/api/v1/users`, {
         headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
         withCredentials: true,
       })

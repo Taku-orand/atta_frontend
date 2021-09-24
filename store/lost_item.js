@@ -19,7 +19,7 @@ export const mutations = {
 export const actions = {
   async getLostItem({ commit }, lostItemId) {
     await axios
-      .get(`http://localhost:3000/api/v1/lost_items/${lostItemId}`, {
+      .get(process.env.ATTA_BACKEND + `/api/v1/lost_items/${lostItemId}`, {
         headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
         withCredentials: true,
       })
@@ -39,7 +39,7 @@ export const actions = {
     // indexjsに移動
     axios
       .post(
-        `http://localhost:3000/api/v1/lost_items`,
+        process.env.ATTA_BACKEND + `/api/v1/lost_items`,
         {
           lostItemData,
         },
@@ -58,8 +58,8 @@ export const actions = {
   },
   isValidQRCode({ commit }, params) {
     return this.$axios.$post(
-      `http://localhost:3000/api/v1/lost_items/verificate_qrcode`,
-      {item: { id: params.id, verification_id: params.vid }}
+      process.env.ATTA_BACKEND+`/api/v1/lost_items/verificate_qrcode`,
+      { item: { id: params.id, verification_id: params.vid } }
     )
   },
 }
