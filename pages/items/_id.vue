@@ -56,14 +56,16 @@
       </v-col>
       <v-col cols="4">
         <v-btn class="mr-5" @click="createQRCode(wid)">
-          QRCodeを<span v-if="item.qr_code == 'null'">作成</span><span v-else>アップデート</span>
+          QRCodeを
+          <span v-if="!item.qr_code">作成</span>
+          <span v-else>アップデート</span>
         </v-btn>
       </v-col>
     </v-row>
 
     <!-- QRCODE -->
     <v-row class="justify-center">
-      <div v-if="item.qr_code !== 'null'">
+      <div v-if="item.qr_code">
         <img :src="item.qr_code" />
       </div>
     </v-row>
@@ -98,7 +100,7 @@ export default {
   },
 
   methods: {
-    deleteItem(){
+    deleteItem() {
       this.$store.dispatch('item/deleteItem', this.$route.params.id)
       this.$router.push('/items')
     },
@@ -121,7 +123,8 @@ export default {
     },
     createQRCode(wid) {
       QRCode.toDataURL(
-        process.env.VUE_APP_ATTA_FRONTEND+`/lost-items/${this.$route.params.id}/${this._uid}`,
+        process.env.VUE_APP_ATTA_FRONTEND +
+          `/lost-items/${this.$route.params.id}/${this._uid}`,
         { width: wid }
       )
         .then(async (qrCode) => {

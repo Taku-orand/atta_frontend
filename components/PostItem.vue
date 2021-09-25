@@ -35,7 +35,7 @@
                     <v-textarea
                       v-model="content"
                       label="アイテム情報*"
-                      hint="特に公開はしません"
+                      hint="アイテムの特徴を書いてください"
                       persistent-hint
                       required
                     ></v-textarea>
