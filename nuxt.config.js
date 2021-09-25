@@ -41,6 +41,7 @@ export default {
     { src: '~/plugins/persistedstate.js', ssr: false },
     { src: '~/plugins/vee-validate.js' },
     { src: '~/plugins/vue2-google-maps.js' },
+    { src: '~/plugins/notifications-client', ssr: false },
   ],
 
   auth0: {

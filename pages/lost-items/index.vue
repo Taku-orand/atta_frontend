@@ -6,85 +6,88 @@
           <v-card-subtitle>落とし物詳細情報</v-card-subtitle>
           <v-card-text> 持ち主: {{ lost_item.user.name }} </v-card-text>
           <v-card-text> 落とし物: {{ lost_item.item.name }} </v-card-text>
-          <v-card-text> 落とし物詳細: {{ lost_item.item.content }} </v-card-text>
+          <v-card-text>
+            落とし物詳細: {{ lost_item.item.content }}
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
-    <!-- 見つけた場所用のマップ -->
-    <v-dialog v-model="dialog1" max-width="600px">
-      <template #activator="{ on, attrs }">
-        <v-row row justify-center align="center">
-          <v-col>
-            <ValidationProvider
-              v-slot="{ errors }"
-              name="見つけた場所"
-              rules="required"
-            >
-              <v-text-field
-                v-model="foundLocation"
-                prepend-icon="mdi-map-marker"
-                label="1.見つけた場所"
-                class="centered-input"
-                clearable
-                placeholder="渋谷のマクドナルド..."
-                :hint="foundLocation"
-                persistent-hint
-                required
-                :error-messages="errors"
-              >
-                <template #prepend>
-                  <v-btn
-                    icon
-                    color="primary"
-                    v-bind="attrs"
-                    rounded
-                    small
-                    @click="showMapAction1"
-                    v-on="on"
-                    ><v-icon>mdi-map-search-outline</v-icon></v-btn
-                  >
-                </template>
-              </v-text-field>
-            </ValidationProvider>
-          </v-col>
-        </v-row>
-      </template>
-      <div>
-        <v-row justify="center" align="center">
-          <v-col cols="12">
-            <v-card>
-              <v-card-text>
-                Mapから場所を指定することもできます。<br />
-                クリックorタッチすると指定できます。
-              </v-card-text>
-              <GmapMap
-                map-type-id="roadmap"
-                :center="maplocation1"
-                :zoom="zoom"
-                :style="styleMap"
-                :options="mapOptions"
-                @click="placeMarker1($event)"
-              >
-                <GmapMarker
-                  :title="marker1.title"
-                  :position="marker1.position"
-                  :clickable="true"
-                  :draggable="false"
-                  :icon="marker1.pinicon"
-                />
-              </GmapMap>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
-    </v-dialog>
 
-    <!-- 現在地ボタン -->
     <ValidationObserver ref="lostItemForm">
       <v-form @submit.prevent="submit">
+        <!-- 見つけた場所用のマップ -->
+        <v-dialog v-model="dialog1" max-width="600px">
+          <template #activator="{ on, attrs }">
+            <v-row row justify-center align="center">
+              <v-col>
+                <ValidationProvider
+                  v-slot="{ errors }"
+                  name="見つけた場所"
+                  rules="required"
+                >
+                  <v-text-field
+                    v-model="foundLocation"
+                    prepend-icon="mdi-map-marker"
+                    label="1.見つけた場所"
+                    class="centered-input"
+                    placeholder="渋谷のマクドナルド..."
+                    :hint="foundLocation"
+                    persistent-hint
+                    required
+                    :error-messages="errors"
+                  >
+                    <template #prepend>
+                      <v-btn
+                        icon
+                        color="primary"
+                        v-bind="attrs"
+                        rounded
+                        small
+                        @click="showMapAction1"
+                        v-on="on"
+                        ><v-icon>mdi-map-search-outline</v-icon></v-btn
+                      >
+                    </template>
+                  </v-text-field>
+                </ValidationProvider>
+              </v-col>
+            </v-row>
+          </template>
+          <div>
+            <v-row justify="center" align="center">
+              <v-col cols="12">
+                <v-card>
+                  <v-card-text>
+                    Mapから場所を指定することもできます。<br />
+                    クリックorタッチすると指定できます。
+                  </v-card-text>
+                  <GmapMap
+                    map-type-id="roadmap"
+                    :center="maplocation1"
+                    :zoom="zoom"
+                    :style="styleMap"
+                    :options="mapOptions"
+                    @click="placeMarker1($event)"
+                  >
+                    <GmapMarker
+                      :title="marker1.title"
+                      :position="marker1.position"
+                      :clickable="true"
+                      :draggable="false"
+                      :icon="marker1.pinicon"
+                    />
+                  </GmapMap>
+                </v-card>
+              </v-col>
+            </v-row>
+          </div>
+        </v-dialog>
+
+        <!-- 現在地ボタン -->
         <v-row justify="end">
           <v-btn @click="inputCurrentAddress1"
-            ><v-icon left>mdi-map-marker-radius-outline</v-icon>現在地から入力</v-btn
+            ><v-icon left>mdi-map-marker-radius-outline</v-icon
+            >現在地から入力</v-btn
           >
         </v-row>
 
