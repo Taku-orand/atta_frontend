@@ -1,8 +1,13 @@
 <template>
   <v-form>
+    <Notification
+      :msg="dlg.msg"
+      :is-open="dlg.isOpen"
+      :type="dlg.type"
+    ></Notification>
     <v-container>
       <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="600px">
+        <v-dialog v-model="dialog" max-width="600px">
           <template #activator="{ on, attrs }">
             <v-btn
               class="btn btn-lg btn-info shadow p-3 create-question-btn"
@@ -58,13 +63,22 @@
   </v-form>
 </template>
 <script>
+import Notification from './Notification.vue'
 export default {
+  components: {
+    Notification,
+  },
   data() {
     return {
       dialog: false,
       name: '',
       content: '',
       loadingDialog: false,
+      dlg: {
+        msg: '',
+        isOpen: false,
+        type: '',
+      },
     }
   },
   methods: {
@@ -73,7 +87,6 @@ export default {
       this.content = ''
     },
     async postItem() {
-      // this.loadingOnOff()
       const result = await this.$store.dispatch('item/postItem', {
         item: {
           name: this.name,
@@ -85,12 +98,14 @@ export default {
         await this.$store.dispatch('item/getItems')
         this.$router.push('/items/' + result.id)
       } else {
-        // this.loadingOnOff()
+        this.dlg.msg = '保存に失敗しました. もう一度お試しください.'
+        this.dlg.type = 'error'
+        this.dlg.isOpen = true
       }
+      setTimeout(() => {
+        this.dlg.isOpen = false
+      }, 800)
     },
-    // loadingOnOff(){
-    //   this.loadingDialog = !this.loadingDialog
-    // }
   },
 }
 </script>

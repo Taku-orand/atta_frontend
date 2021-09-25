@@ -1,20 +1,10 @@
 <template>
   <v-row justify="space-around">
     <v-col cols="auto">
-      <v-dialog v-model="dialog" max-width="600">
+      <v-dialog v-model="dialog" max-width="600px">
         <v-alert
-          v-if="switchMode == 'success'"
           dense
-          type="success"
-          border="left"
-          elevation="2"
-        >
-          {{ msg }}
-        </v-alert>
-        <v-alert
-          v-else-if="switchMode == 'error'"
-          dense
-          type="error"
+          :type="type"
           border="left"
           elevation="2"
         >
@@ -39,6 +29,10 @@ export default {
       type: String,
       default: '',
     },
+    type: {
+      type: String,
+      default: '',
+    }
   },
   data() {
     return {
@@ -46,7 +40,7 @@ export default {
     }
   },
   computed: {
-    switchMode() {
+    switchType() {
       return this.mode
     },
   },
