@@ -7,7 +7,11 @@
     ></Notification>
     <v-container>
       <v-row justify="center">
-        <v-dialog v-model="dialog" :persistent="!isValid" max-width="600px">
+        <v-dialog
+          v-model="dialog"
+          :persistent="!isValid || userInStore.initial"
+          max-width="600px"
+        >
           <template #activator="{ on, attrs }">
             <v-btn
               id="userInfo"
@@ -24,6 +28,11 @@
           <ValidationObserver ref="userForm" v-slot="{ invalid }">
             <v-form v-model="isValid" @submit.prevent="submit">
               <v-card>
+                <div class="text-overline">
+                  <v-chip class="ma-2" color="green" text-color="white">
+                    初期設定
+                  </v-chip>
+                </div>
                 <v-card-title>
                   <span class="text-h5">ユーザー情報</span>
                 </v-card-title>
@@ -88,6 +97,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
+                    v-show="!userInStore.initial"
                     :disabled="invalid"
                     color="blue darken-1"
                     text
@@ -150,6 +160,9 @@ export default {
       set(introduction) {
         this.introduction = introduction
       },
+    },
+    userInStore() {
+      return this.$store.getters['user/userGetter']
     },
   },
   methods: {

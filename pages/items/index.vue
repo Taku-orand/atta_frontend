@@ -33,8 +33,6 @@ export default {
   },
   mounted() {
     this.$store.commit('setShowUserInfo', true)
-  },
-  updated() {
     this.isFirstLogin()
   },
   methods: {
