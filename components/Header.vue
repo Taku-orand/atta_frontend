@@ -1,6 +1,8 @@
 <template>
   <v-app-bar fixed app>
-    <v-toolbar-title v-text="title" />
+    <NuxtLink :to="itemListUrl">
+      <v-toolbar-title v-text="title" />
+    </NuxtLink>
     <v-spacer />
     <Settings v-if="showUserInfo"></Settings>
   </v-app-bar>
@@ -14,6 +16,7 @@ export default {
   data() {
     return {
       title: 'AttA',
+      itemListUrl: '/items',
     }
   },
   computed: {
