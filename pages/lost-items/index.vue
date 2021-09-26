@@ -242,15 +242,12 @@ export default {
     }
   },
   async fetch({ store, redirect }) {
-    const Key = localStorage.getItem('my-key')
-    const Item = await JSON.parse(Key)
-    if ( Key == null || !Item.lost_item.lostItemData.item.id) {
+    const Key = localStorage.getItem('item_referer')
+    const ItemId = await JSON.parse(Key)
+    if (Key == null || ItemId == null) {
       redirect('/')
     }
-    await store.dispatch(
-      'lost_item/getLostItem',
-      Item.lost_item.lostItemData.item.id
-    )
+    await store.dispatch('lost_item/getLostItem', ItemId)
   },
   computed: {
     lost_item() {
@@ -258,8 +255,7 @@ export default {
     },
   },
   destroyed() {
-    this.$store.commit('lost_item/setLostItem', {})
-    // localStorage.removeItem('my-key')
+    localStorage.removeItem('item_referer')
   },
   mounted() {
     this.$store.commit('setShowUserInfo', false)

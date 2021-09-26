@@ -134,7 +134,6 @@ export default {
             itemId: this.$route.params.id,
             item: {
               qr_code: this.qrCode,
-              isValid: true,
               verification_id: this._uid,
             },
           })
