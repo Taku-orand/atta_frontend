@@ -69,6 +69,13 @@
         <img :src="item.qr_code" />
       </div>
     </v-row>
+
+    <div>
+      <div v-for="lostItemInfomation in lostItemInfomations" :key="lostItemInfomation.id">
+        {{lostItemInfomation.found_location}}
+        {{lostItemInfomation.item_destination_details}}
+      </div>
+    </div>
   </v-container>
 </template>
 <script>
@@ -88,11 +95,15 @@ export default {
   async fetch({ store, params }) {
     await store.dispatch('user/getUser')
     await store.dispatch('item/getItem', params.id)
+    await store.dispatch('lost_item_infomation/getLostItemInfomations', params.id)
   },
   computed: {
     item() {
       return this.$store.getters['item/itemGetter']
     },
+    lostItemInfomations(){
+      return this.$store.getters['lost_item_infomation/lostItemInfomationsGetter']
+    }
   },
 
   mounted() {

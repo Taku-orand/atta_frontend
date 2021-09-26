@@ -28,10 +28,10 @@ export const actions = {
       console.log(e)
     }
   },
-  getLostItemInfomations({ commit }, itemId) {
+  async getLostItemInfomations({ commit }, itemId) {
     try {
-      const LostItemInfomations = this.$axios.$get(
-        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations' + itemId,
+      const LostItemInfomations = await this.$axios.$get(
+        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations/' + itemId,
         {
           withCredentials: true,
         }
@@ -44,7 +44,7 @@ export const actions = {
   deleteLostItemInfomation({ commit }, itemId) {
     try {
       return this.$axios.$delete(
-        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations' + itemId,
+        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations/' + itemId,
         {
           withCredentials: true,
         }
