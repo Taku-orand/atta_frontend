@@ -1,5 +1,10 @@
 <template>
   <v-container>
+    <Notification
+      :msg="dlg.msg"
+      :is-open="dlg.isOpen"
+      :type="dlg.type"
+    ></Notification>
     <v-row>
       <v-col cols="12">
         <v-card>
@@ -228,16 +233,20 @@ export default {
       itemDestinationDetails: '',
       dlg: {
         msg: '',
-        isOpen: true,
+        isOpen: false,
         mode: '',
       },
       dialog1: false,
       dialog2: false,
+      item: {}
     }
   },
-  async fetch({ store }) {
+  async fetch({ store, redirect }) {
     const Key = localStorage.getItem('my-key')
     const Item = await JSON.parse(Key)
+    if ( Key == null || !Item.lost_item.lostItemData.item.id) {
+      redirect('/')
+    }
     await store.dispatch(
       'lost_item/getLostItem',
       Item.lost_item.lostItemData.item.id
@@ -247,6 +256,10 @@ export default {
     lost_item() {
       return this.$store.getters['lost_item/lostItemDataGetter']
     },
+  },
+  destroyed() {
+    this.$store.commit('lost_item/setLostItem', {})
+    // localStorage.removeItem('my-key')
   },
   mounted() {
     this.$store.commit('setShowUserInfo', false)
@@ -368,18 +381,45 @@ export default {
         if (!success) {
           return null
         }
-        await this.$store.dispatch('lost_item/postNotification', {
-          lostItemData: {
-            foundLocation: this.foundLocation,
-            itemDestination: this.itemDestination,
-            itemDestinationDetails: this.itemDestinationDetails,
-            mapLocationLat: this.maplocation2.lat,
-            mapLocationLng: this.maplocation2.lng,
-            email: this.lost_item.user.email,
-            user_name: this.lost_item.user.name,
-            item_name: this.lost_item.item.name,
-          },
-        })
+        const Response = await this.$store.dispatch(
+          'lost_item/postNotification',
+          {
+            lostItemData: {
+              foundLocation: this.foundLocation,
+              itemDestination: this.itemDestination,
+              itemDestinationDetails: this.itemDestinationDetails,
+              mapLocationLat: this.maplocation2.lat,
+              mapLocationLng: this.maplocation2.lng,
+              email: this.lost_item.user.email,
+              user_name: this.lost_item.user.name,
+              item_name: this.lost_item.item.name,
+            },
+          }
+        )
+        if (Response.notificated) {
+          const Key = localStorage.getItem('my-key')
+          const Item = await JSON.parse(Key)
+          await this.$store.dispatch('lost_item/updateItem', {
+            itemId: Item.lost_item.lostItemData.item.id,
+            item: {
+              isValid: false,
+            },
+          })
+          this.dlg.isOpen = true
+          this.dlg.msg =
+            '持ち主にお知らせしました! ご協力ありがとうございます！'
+          this.dlg.type = 'success'
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 5000)
+        } else {
+          this.dlg.isOpen = true
+          this.dlg.msg = 'メールを送れませんでした. もう一度お試しください'
+          this.dlg.type = 'error'
+          setTimeout(() => {
+            this.dlg.isOpen = false
+          }, 5000)
+        }
       })
     },
   },
