@@ -3,47 +3,34 @@
     <!-- アイテム情報 -->
     <v-row class="justify-center">
       <v-col>
-          <div v-if="!edit">
-            名前：{{ item.name }}<br />
-            内容：{{ item.content }}<br />
-          </div>
-          <div v-if="edit">
-            <v-row dense>
-              <v-col cols="3"> 名前： </v-col>
-              <v-col cols="8">
-                <v-text-field
-                  v-model="tempName"
-                  dense
-                  height="17"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            内容：
-            <v-textarea
-              v-model="tempContent"
-              class="centered-input"
-              :hide-details="true"
-              auto-grow
-              rows="1"
-              outlined
-            />
-          </div>
-          <div v-if="!edit">
-            <v-btn small @click="editItem">編集</v-btn>
-            <v-btn small class="error" @click="deleteItem">削除</v-btn>
-          </div>
-          <div v-if="edit">
-            <v-row row justify-end align-end>
-              <v-col class="justify-center">
-                <v-row>
-                  <v-col>
-                    <v-btn small @click="updateItem">保存</v-btn>
-                    <v-btn small @click="doneEdit">キャンセル</v-btn>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </div>
+        <div @click="doEdit">
+          名前:
+          <div v-if="!edit" @click="doEdit" v-text="item.name"></div>
+          <v-text-field v-if="edit" v-model="tempName" type="text" outlined />
+          内容:
+          <div v-if="!edit" @click="doEdit" v-html="item.content"></div>
+          <v-textarea
+            v-if="edit"
+            v-model="tempContent"
+            type="text"
+            auto-grow
+            clearable
+            rows="2"
+            outlined
+          />
+        </div>
+        <div v-if="!edit">
+          <v-btn small class="error" @click="deleteItem">削除</v-btn>
+        </div>
+        <div v-if="edit">
+          <v-row class="justify-end">
+            <v-col>
+              <v-btn small @click="updateItem">保存</v-btn>
+              <v-btn small @click="doneEdit">キャンセル</v-btn>
+            </v-col>
+          </v-row>
+        </div>
+        <v-divider></v-divider>
       </v-col>
     </v-row>
 
@@ -53,11 +40,28 @@
         <v-text-field v-model="wid" label="サイズ" height="17"></v-text-field>
       </v-col>
       <v-col>
-        <v-btn @click="createQRCode(wid)">
+        <v-btn @click="qrCodeUpdateConfirm">
           QRCodeを
           <span v-if="!item.qr_code">作成</span>
           <span v-else>アップデート</span>
         </v-btn>
+        <v-dialog v-model="qrCodeUpdateDialog" max-width="800px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >QRコードが書き変わります。よろしいですか？</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="qrCodeUpdateDialog = false"
+                  >キャンセル</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="createQRCode(wid)"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
       </v-col>
     </v-row>
 
@@ -68,31 +72,32 @@
       </div>
     </v-row>
 
+    <v-divider></v-divider>
     <v-data-table
       :headers="headers"
-      :items="lostItemInfomations"
-      class="elevation-1"
+      :items="lostItemInfomationsTemp"
+      class="elevation-3"
       disable-sort
       mobile-breakpoint="100"
-      :items-per-page=4
+      :items-per-page="4"
       no-data-text="記録はまだありません"
     >
       <template #top>
         <v-toolbar flat>
           <v-toolbar-title>落とし物記録</v-toolbar-title>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialogDelete" max-width="800px">
+          <v-dialog v-model="lostItemInfoDialogDelete" max-width="800px">
             <v-card>
               <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
+                >記録が削除されます。よろしいですか？</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
+                  >キャンセル</v-btn
                 >
                 <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
+                  >削除</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -106,7 +111,9 @@
         </v-icon>
       </template>
       <template #[`item.created_at`]="{ item }">
-        {{item.created_at.slice(0,4)}}/{{item.created_at.slice(5,7)}}/{{item.created_at.slice(8,10)}}
+        {{ item.created_at.slice(0, 4) }}/{{ item.created_at.slice(5, 7) }}/{{
+          item.created_at.slice(8, 10)
+        }}
       </template>
     </v-data-table>
   </v-container>
@@ -130,8 +137,10 @@ export default {
         { text: '詳細な場所', value: 'item_destination_details', width: '10%' },
       ],
       dialog: false,
-      dialogDelete: false,
+      lostItemInfoDialogDelete: false,
       infoId: 999999,
+      lostItemInfomationsTemp: [],
+      qrCodeUpdateDialog: false
     }
   },
   async fetch({ store, params }) {
@@ -146,21 +155,23 @@ export default {
     item() {
       return this.$store.getters['item/itemGetter']
     },
-    lostItemInfomations() {
-      return this.$store.getters[
-        'lost_item_infomation/lostItemInfomationsGetter'
-      ]
-    },
   },
 
   mounted() {
     this.$store.commit('isLoggedIn')
+    this.lostItemInfomationsTemp =
+      this.$store.getters['lost_item_infomation/lostItemInfomationsGetter']
   },
 
   methods: {
+    doEdit() {
+      this.tempName = this.item.name
+      this.tempContent = this.item.content
+      this.edit = true
+    },
     closeDelete() {
       this.infoId = 999999
-      this.dialogDelete = false
+      this.lostItemInfoDialogDelete = false
     },
     deleteItemConfirm() {
       this.$store.dispatch(
@@ -168,11 +179,15 @@ export default {
         this.infoId
       )
       this.$store.dispatch('lost_item_infomation/getLostItemInfomations')
+      this.lostItemInfomationsTemp.some((v, i) => {
+        if (v.id === this.infoId) this.lostItemInfomationsTemp.splice(i, 1)
+        return null
+      })
       this.closeDelete()
     },
     deleteLostItemInfomation(info) {
       this.infoId = info.id
-      this.dialogDelete = true
+      this.lostItemInfoDialogDelete = true
     },
     deleteItem() {
       this.$store.dispatch('item/deleteItem', this.$route.params.id)
@@ -195,6 +210,9 @@ export default {
       this.tempContent = ''
       this.edit = false
     },
+    qrCodeUpdateConfirm(){
+      this.qrCodeUpdateDialog = true
+    },
     createQRCode(wid) {
       QRCode.toDataURL(
         process.env.VUE_APP_ATTA_FRONTEND +
@@ -212,6 +230,7 @@ export default {
             },
           })
           await this.$store.dispatch('item/getItem', this.$route.params.id)
+          this.qrCodeUpdateDialog = false
         })
         .catch((err) => {
           console.error(err)
