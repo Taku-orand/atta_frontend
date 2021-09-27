@@ -1,6 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-const { VUE_APP_GOOGLE_API_KEY, VUE_APP_ATTA_BACKEND, VUE_APP_ATTA_FRONTEND } =
-  process.env
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -43,8 +42,8 @@ export default {
   ],
 
   auth0: {
-    domain: 'dev-w0-rzoqk.jp.auth0.com',
-    clientID: '3GyZvQ1eR3GTObkONiIOg3fhuas66vqW',
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -56,7 +55,20 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
   ],
+
+  manifest: {
+    name: 'ATTA_落とし物発見サービス',
+    lang: 'ja',
+    short_name: 'ATTA_落とし物発見サービス',
+    title: 'ATTA_落とし物発見サービス',
+    'og:title': 'ATTA_落とし物発見サービス',
+    description: 'ATTAはみんなの協力で落とし物を見つけるサービスです',
+    'og:description': 'ATTAはみんなの協力で落とし物を見つけるサービスです',
+    theme_color: '#163956',
+    background_color: '#163956',
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -114,9 +126,28 @@ export default {
     dir: './public',
   },
 
-  env: {
-    VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
-    ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+  publicRuntimeConfig: {
     VUE_APP_ATTA_FRONTEND: process.env.VUE_APP_ATTA_FRONTEND,
+    VUE_APP_GOOGLE_API_KEY:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_GOOGLE_API_KEY
+        : undefined,
+    VUE_APP_ATTA_BACKEND:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_ATTA_BACKEND
+        : undefined,
+    domain:
+      process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_AUTH0_DOMAIN : undefined,
+    clientID:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_AUTH0_CRIENT_ID
+        : undefined,
+      },
+      
+      privateRuntimeConfig: {
+        VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
+        VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+        domain: process.env.VUE_APP_AUTH0_DOMAIN,
+        clientID: process.env.VUE_APP_AUTH0_CRIENT_ID
   },
 }

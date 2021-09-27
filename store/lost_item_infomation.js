@@ -18,7 +18,7 @@ export const actions = {
   postLostItemInfomation({ commit }, lostItemInfomation) {
     try {
       return this.$axios.$post(
-        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations',
+        this.$config.VUE_APP_ATTA_BACKEND + '/api/v1/lost_item_infomations',
         lostItemInfomation,
         {
           withCredentials: true,
@@ -31,12 +31,17 @@ export const actions = {
   async getLostItemInfomations({ commit }, itemId) {
     try {
       const LostItemInfomations = await this.$axios.$get(
-        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations/' + itemId,
+        this.$config.VUE_APP_ATTA_BACKEND +
+          '/api/v1/lost_item_infomations/' +
+          itemId,
         {
           withCredentials: true,
         }
       )
-      commit('setlostItemInfomations', LostItemInfomations.lost_item_infomations)
+      commit(
+        'setlostItemInfomations',
+        LostItemInfomations.lost_item_infomations
+      )
     } catch (e) {
       console.log(e)
     }
@@ -44,7 +49,7 @@ export const actions = {
   deleteLostItemInfomation({ commit }, lostItemInfomationId) {
     try {
       return this.$axios.$delete(
-        process.env.ATTA_BACKEND +
+        this.$config.VUE_APP_ATTA_BACKEND +
           '/api/v1/lost_item_infomations/' +
           lostItemInfomationId,
         {
