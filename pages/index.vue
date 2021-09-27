@@ -8,7 +8,7 @@
           <span>Logout</span>
         </nuxt-link>
       </div>
-
+{{$config}}
       <div v-if="!loggedIn()" class="content">
         <h2>ログインしてください</h2>
         <nuxt-link class="button is-primary" to="/login">

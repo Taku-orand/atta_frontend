@@ -25,8 +25,7 @@ export const actions = {
   async getItems({ commit }) {
     try {
       const Items = await this.$axios.$get(
-        process.env.ATTA_BACKEND + `/api/v1/items`,
-
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/items`,
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
           withCredentials: true,
@@ -40,7 +39,7 @@ export const actions = {
   postItem({ commit }, item) {
     try {
       return this.$axios.$post(
-        process.env.ATTA_BACKEND + '/api/v1/items',
+        this.$config.VUE_APP_ATTA_BACKEND + '/api/v1/items',
         item,
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
@@ -54,7 +53,7 @@ export const actions = {
   async getItem({ commit }, itemId) {
     try {
       const Item = await this.$axios.$get(
-        process.env.ATTA_BACKEND + `/api/v1/items/${itemId}`,
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/items/${itemId}`,
 
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
@@ -69,7 +68,7 @@ export const actions = {
   async updateItem({ commit }, { itemId, item }) {
     try {
       const Item = await this.$axios.$patch(
-        process.env.ATTA_BACKEND+`/api/v1/items/${itemId}`,
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/items/${itemId}`,
         { item },
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
@@ -86,7 +85,7 @@ export const actions = {
   async deleteItem({ commit }, itemId) {
     try {
       return await this.$axios.$delete(
-        process.env.ATTA_BACKEND + `/api/v1/items/${itemId}`,
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/items/${itemId}`,
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
           withCredentials: true,

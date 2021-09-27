@@ -37,10 +37,14 @@ export const mutations = {
 export const actions = {
   saveUserInfo({ commit }, user) {
     try {
-      return this.$axios.$patch(process.env.ATTA_BACKEND+'/api/v1/users', user, {
-        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-        withCredentials: true,
-      })
+      return this.$axios.$patch(
+        this.$config.VUE_APP_ATTA_BACKEND + '/api/v1/users',
+        user,
+        {
+          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+          withCredentials: true,
+        }
+      )
     } catch (e) {
       console.log(e)
     }

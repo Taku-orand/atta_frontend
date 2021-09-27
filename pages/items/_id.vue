@@ -262,7 +262,7 @@ export default {
     },
     createQRCode(wid) {
       QRCode.toDataURL(
-        process.env.VUE_APP_ATTA_FRONTEND +
+        this.$config.VUE_APP_ATTA_FRONTEND +
           `/lost-items/${this.$route.params.id}/${this._uid}`,
         { width: wid }
       )
