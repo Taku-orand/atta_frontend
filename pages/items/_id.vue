@@ -3,7 +3,6 @@
     <!-- アイテム情報 -->
     <v-row class="justify-center">
       <v-col>
-        <v-card>
           <div v-if="!edit">
             名前：{{ item.name }}<br />
             内容：{{ item.content }}<br />
@@ -45,17 +44,16 @@
               </v-col>
             </v-row>
           </div>
-        </v-card>
       </v-col>
     </v-row>
 
     <!-- QRコード生成ボタン -->
     <v-row class="justify-end">
-      <v-col cols="8">
+      <v-col>
         <v-text-field v-model="wid" label="サイズ" height="17"></v-text-field>
       </v-col>
-      <v-col cols="4">
-        <v-btn class="mr-5" @click="createQRCode(wid)">
+      <v-col>
+        <v-btn @click="createQRCode(wid)">
           QRCodeを
           <span v-if="!item.qr_code">作成</span>
           <span v-else>アップデート</span>
@@ -70,12 +68,47 @@
       </div>
     </v-row>
 
-    <div>
-      <div v-for="lostItemInfomation in lostItemInfomations" :key="lostItemInfomation.id">
-        {{lostItemInfomation.found_location}}
-        {{lostItemInfomation.item_destination_details}}
-      </div>
-    </div>
+    <v-data-table
+      :headers="headers"
+      :items="lostItemInfomations"
+      class="elevation-1"
+      disable-sort
+      mobile-breakpoint="100"
+      :items-per-page=4
+      no-data-text="記録はまだありません"
+    >
+      <template #top>
+        <v-toolbar flat>
+          <v-toolbar-title>落とし物記録</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialogDelete" max-width="800px">
+            <v-card>
+              <v-card-title class="text-h5"
+                >Are you sure you want to delete this item?</v-card-title
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete"
+                  >Cancel</v-btn
+                >
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                  >OK</v-btn
+                >
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+      </template>
+      <template #[`item.actions`]="{ item }">
+        <v-icon small @click="deleteLostItemInfomation(item)">
+          mdi-delete
+        </v-icon>
+      </template>
+      <template #[`item.created_at`]="{ item }">
+        {{item.created_at.slice(0,4)}}/{{item.created_at.slice(5,7)}}/{{item.created_at.slice(8,10)}}
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 <script>
@@ -90,20 +123,34 @@ export default {
       edit: false,
       tempName: '',
       tempContent: '',
+      headers: [
+        { text: '日付', value: 'created_at', width: '0%' },
+        { text: '削除', value: 'actions', width: '5%' },
+        { text: '落とした場所', value: 'found_location', width: '10%' },
+        { text: '詳細な場所', value: 'item_destination_details', width: '10%' },
+      ],
+      dialog: false,
+      dialogDelete: false,
+      infoId: 999999,
     }
   },
   async fetch({ store, params }) {
     await store.dispatch('user/getUser')
     await store.dispatch('item/getItem', params.id)
-    await store.dispatch('lost_item_infomation/getLostItemInfomations', params.id)
+    await store.dispatch(
+      'lost_item_infomation/getLostItemInfomations',
+      params.id
+    )
   },
   computed: {
     item() {
       return this.$store.getters['item/itemGetter']
     },
-    lostItemInfomations(){
-      return this.$store.getters['lost_item_infomation/lostItemInfomationsGetter']
-    }
+    lostItemInfomations() {
+      return this.$store.getters[
+        'lost_item_infomation/lostItemInfomationsGetter'
+      ]
+    },
   },
 
   mounted() {
@@ -111,6 +158,22 @@ export default {
   },
 
   methods: {
+    closeDelete() {
+      this.infoId = 999999
+      this.dialogDelete = false
+    },
+    deleteItemConfirm() {
+      this.$store.dispatch(
+        'lost_item_infomation/deleteLostItemInfomation',
+        this.infoId
+      )
+      this.$store.dispatch('lost_item_infomation/getLostItemInfomations')
+      this.closeDelete()
+    },
+    deleteLostItemInfomation(info) {
+      this.infoId = info.id
+      this.dialogDelete = true
+    },
     deleteItem() {
       this.$store.dispatch('item/deleteItem', this.$route.params.id)
       this.$router.push('/items')

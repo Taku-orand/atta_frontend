@@ -41,10 +41,12 @@ export const actions = {
       console.log(e)
     }
   },
-  deleteLostItemInfomation({ commit }, itemId) {
+  deleteLostItemInfomation({ commit }, lostItemInfomationId) {
     try {
       return this.$axios.$delete(
-        process.env.ATTA_BACKEND + '/api/v1/lost_item_infomations/' + itemId,
+        process.env.ATTA_BACKEND +
+          '/api/v1/lost_item_infomations/' +
+          lostItemInfomationId,
         {
           withCredentials: true,
         }
