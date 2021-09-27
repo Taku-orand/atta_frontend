@@ -37,10 +37,9 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/auth0.js' },
-    // サーバーサイドでは使用できないのでssrはfalseにすること
-    { src: '~/plugins/persistedstate.js', ssr: false },
     { src: '~/plugins/vee-validate.js' },
     { src: '~/plugins/vue2-google-maps.js' },
+    // { src: '~/plugins/notifications-client', ssr: false },
   ],
 
   auth0: {

@@ -85,16 +85,13 @@ export const actions = {
   },
   async deleteItem({ commit }, itemId) {
     try {
-      const Item = await this.$axios.$delete(
+      return await this.$axios.$delete(
         process.env.ATTA_BACKEND + `/api/v1/items/${itemId}`,
         {
           headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
           withCredentials: true,
         }
       )
-      if (Item.updated) {
-        // 削除成功
-      }
     } catch (e) {
       console.log(e)
     }

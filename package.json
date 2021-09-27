@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev2": "PORT=3333 nuxt",
     "dev": "nuxt",
     "heroku-postbuild": "npm run build",
     "build": "nuxt build",
@@ -24,8 +25,7 @@
     "query-string": "^4.3.4",
     "vee-validate": "^3.4.13",
     "vue2-google-maps": "^0.10.7",
-    "vuetify": "^2.5.5",
-    "vuex-persistedstate": "^4.0.0"
+    "vuetify": "^2.5.5"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
