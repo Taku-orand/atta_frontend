@@ -6,9 +6,21 @@
         <div @click="doEdit">
           名前:
           <div v-if="!edit" @click="doEdit" v-text="item.name"></div>
-          <v-text-field v-if="edit" v-model="tempName" type="text" outlined />
+          <v-text-field
+            v-if="edit"
+            v-model="tempName"
+            type="text"
+            outlined
+            hide-details
+            dense
+            row-height="1"
+          />
           内容:
-          <div v-if="!edit" @click="doEdit" v-html="item.content"></div>
+          <div
+            v-if="!edit"
+            @click="doEdit"
+            v-html="item.content.replace(/\n/g, '<br/>')"
+          ></div>
           <v-textarea
             v-if="edit"
             v-model="tempContent"
@@ -17,10 +29,8 @@
             clearable
             rows="2"
             outlined
+            hide-details
           />
-        </div>
-        <div v-if="!edit">
-          <v-btn small class="error" @click="deleteItem">削除</v-btn>
         </div>
         <div v-if="edit">
           <v-row class="justify-end">
@@ -37,7 +47,12 @@
     <!-- QRコード生成ボタン -->
     <v-row class="justify-end">
       <v-col>
-        <v-text-field v-model="wid" label="サイズ" height="17"></v-text-field>
+        <v-text-field
+          v-model="wid"
+          label="サイズ"
+          dense
+          outlined
+        ></v-text-field>
       </v-col>
       <v-col>
         <v-btn @click="qrCodeUpdateConfirm">
@@ -46,22 +61,25 @@
           <span v-else>アップデート</span>
         </v-btn>
         <v-dialog v-model="qrCodeUpdateDialog" max-width="800px">
-            <v-card>
-              <v-card-title class="text-h5"
-                >QRコードが書き変わります。よろしいですか？</v-card-title
+          <v-card>
+            <v-card-title class="text-h5"
+              >QRコードが書き変わります。よろしいですか？</v-card-title
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="createQRCode(wid)"
+                >OK</v-btn
               >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="qrCodeUpdateDialog = false"
-                  >キャンセル</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="createQRCode(wid)"
-                  >OK</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="qrCodeUpdateDialog = false"
+                >キャンセル</v-btn
+              >
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-col>
     </v-row>
 
@@ -72,6 +90,7 @@
       </div>
     </v-row>
 
+    <!-- 落とし物記録一覧 -->
     <v-divider></v-divider>
     <v-data-table
       :headers="headers"
@@ -81,6 +100,10 @@
       mobile-breakpoint="100"
       :items-per-page="4"
       no-data-text="記録はまだありません"
+      :footer-props="{
+        itemsPerPageText: pageText,
+        itemsPerPageOptions: [3, 5, 10],
+      }"
     >
       <template #top>
         <v-toolbar flat>
@@ -116,6 +139,28 @@
         }}
       </template>
     </v-data-table>
+
+    <!-- アイテム削除ボタン -->
+    <div>
+      <v-btn block class="error mt-10" @click="deleteItemDialog = true"
+        >削除</v-btn
+      >
+    </div>
+    <v-dialog v-model="deleteItemDialog" max-width="800px">
+      <v-card>
+        <v-card-title class="text-h5"
+          >アイテムが削除されます。よろしいですか？</v-card-title
+        >
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="deleteItem">OK</v-btn>
+          <v-btn color="blue darken-1" text @click="deleteItemDialog = false"
+            >キャンセル</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 <script>
@@ -140,7 +185,9 @@ export default {
       lostItemInfoDialogDelete: false,
       infoId: 999999,
       lostItemInfomationsTemp: [],
-      qrCodeUpdateDialog: false
+      qrCodeUpdateDialog: false,
+      deleteItemDialog: false,
+      pageText: '閲覧数',
     }
   },
   async fetch({ store, params }) {
@@ -210,7 +257,7 @@ export default {
       this.tempContent = ''
       this.edit = false
     },
-    qrCodeUpdateConfirm(){
+    qrCodeUpdateConfirm() {
       this.qrCodeUpdateDialog = true
     },
     createQRCode(wid) {

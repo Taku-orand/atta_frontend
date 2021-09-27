@@ -8,12 +8,12 @@
     <v-row>
       <v-col cols="12">
         <v-card>
-          <v-card-subtitle>落とし物詳細情報</v-card-subtitle>
-          <v-card-text> 持ち主: {{ lost_item.user.name }} </v-card-text>
-          <v-card-text> 落とし物: {{ lost_item.item.name }} </v-card-text>
-          <v-card-text>
-            落とし物詳細: {{ lost_item.item.content }}
-          </v-card-text>
+          <v-card-subtitle>落とし物詳細情報</v-card-subtitle>持ち主:
+          <div v-text="lost_item.user.name"></div>
+          落とし物:
+          <div v-text="lost_item.item.name"></div>
+          落とし物詳細:
+          <div v-html="lost_item.item.content.replace(/\n/g, '<br/>')"></div>
         </v-card>
       </v-col>
     </v-row>
@@ -238,7 +238,7 @@ export default {
       },
       dialog1: false,
       dialog2: false,
-      item: {}
+      item: {},
     }
   },
   async fetch({ store, redirect }) {
