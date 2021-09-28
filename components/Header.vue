@@ -5,6 +5,10 @@
     </NuxtLink>
     <v-spacer />
     <Settings v-if="showUserInfo"></Settings>
+    <v-spacer />
+    <NuxtLink v-if="showUserInfo" to="/logout">
+      <v-btn class="warning">ログアウト</v-btn>
+    </NuxtLink>
   </v-app-bar>
 </template>
 <script>

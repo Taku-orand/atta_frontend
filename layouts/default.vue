@@ -2,7 +2,7 @@
   <v-app dark>
     <Header v-if="showHeader"></Header>
 
-    <v-main class="main">
+    <v-main>
       <v-container>
         <Nuxt />
       </v-container>
@@ -36,9 +36,3 @@ export default {
   },
 }
 </script>
-
-<style>
-.main {
-  background-color: antiquewhite;
-}
-</style>

@@ -24,6 +24,9 @@
 export default {
   mounted() {
     this.$store.commit('setShowUserInfo', false)
+    if(this.loggedIn()){
+      this.$router.push('/items')
+    }
   },
   methods: {
     loggedIn() {
