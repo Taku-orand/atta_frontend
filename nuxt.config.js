@@ -137,17 +137,23 @@ export default {
         ? process.env.VUE_APP_ATTA_BACKEND
         : undefined,
     domain:
-      process.env.NODE_ENV !== 'production' ? process.env.VUE_APP_AUTH0_DOMAIN : undefined,
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_AUTH0_DOMAIN
+        : undefined,
     clientID:
       process.env.NODE_ENV !== 'production'
         ? process.env.VUE_APP_AUTH0_CRIENT_ID
         : undefined,
-      },
-      
-      privateRuntimeConfig: {
-        VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
-        VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
-        domain: process.env.VUE_APP_AUTH0_DOMAIN,
-        clientID: process.env.VUE_APP_AUTH0_CRIENT_ID
   },
+
+  privateRuntimeConfig: {
+    VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
+    VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+  },
+  env: {
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+  }
 }
