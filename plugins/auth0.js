@@ -6,8 +6,8 @@ export default (context, inject) => {
   class Auth0Util {
     showLock(container) {
       const lock = new Auth0Lock(
-        context.$config.clientID,
-        context.$config.domain,
+        context.env.clientID,
+        context.env.domain,
         {
           container,
           closable: false,
