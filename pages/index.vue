@@ -1,47 +1,46 @@
 <template>
   <section class="container">
     <div>
-      <div v-if="loggedIn()" class="content">
-        <h2>ログイン中です</h2>
-        <nuxt-link class="button is-warning" to="/logout">
-          <span class="icon"><i class="fa fa-sign-out"></i></span>
-          <span>Logout</span>
-        </nuxt-link>
-      </div>
-      
-      <div v-if="!loggedIn()" class="content">
-        <h2>ログインしてください</h2>
-        <nuxt-link class="button is-primary" to="/login">
-          <span class="icon"><i class="fa fa-sign-in"></i></span>
-          <span>Login</span>
-        </nuxt-link>
-      </div>
-      <button class="button is-primary" @click="ping">Ping</button>
-      <button class="button is-danger" @click="secured">Secured</button>
+      <v-row>
+        <v-col cols="12">
+          <h1>ATTAで落とし物を見つけよう！</h1>
+          <h2>みんなで協力して持ち主に届けよう！</h2>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="content">
+          <h2></h2>
+          <nuxt-link class="button is-primary" to="/login">
+            <span class="icon"><i class="fa fa-sign-in"></i></span>
+            <span>使ってみる!</span>
+          </nuxt-link>
+        </v-col>
+      </v-row>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-  mounted(){
-    this.$store.commit('setShowUserInfo',false)
+  mounted() {
+    this.$store.commit('setShowUserInfo', false)
   },
   methods: {
     loggedIn() {
-      return this.$auth0.isAuthenticated();
+      return this.$auth0.isAuthenticated()
     },
-    async ping() {
-      const ret = await this.$axios.$get("/api/v1/ping");
-      console.log(ret)
-    },
-    async secured() {
-      const ret = await this.$axios.$get('/api/v1/secured',
-        { headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() }});
-        console.log(ret)
-    }
-  }
-};
+    // async ping() {
+    //   const ret = await this.$axios.$get('/api/v1/ping')
+    //   console.log(ret)
+    // },
+    // async secured() {
+    //   const ret = await this.$axios.$get('/api/v1/secured', {
+    //     headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+    //   })
+    //   console.log(ret)
+    // },
+  },
+}
 </script>
 
 <style>
@@ -53,8 +52,8 @@ export default {
   text-align: center;
 }
 .title {
-  font-family: "Quicksand", "Source Sans Pro", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* 1 */
+  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* 1 */
   display: block;
   font-weight: 300;
   font-size: 100px;

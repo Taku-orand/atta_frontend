@@ -49,7 +49,7 @@
       <v-col>
         <v-text-field
           v-model="wid"
-          label="サイズ"
+          label="サイズ変更"
           dense
           outlined
         ></v-text-field>
