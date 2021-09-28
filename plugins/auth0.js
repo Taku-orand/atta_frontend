@@ -5,6 +5,7 @@ import queryString from 'query-string'
 export default (context, inject) => {
   class Auth0Util {
     showLock(container) {
+      console.log(context)
       const lock = new Auth0Lock(
         context.$config.clientID,
         context.$config.domain,
