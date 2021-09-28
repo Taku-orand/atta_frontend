@@ -2,24 +2,24 @@
   <v-app dark>
     <Header v-if="showHeader"></Header>
 
-    <v-main>
+    <v-main class="main">
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-
+    
     <Footer v-if="showFooter"></Footer>
   </v-app>
 </template>
 
 <script>
 import Header from '../components/Header.vue'
-import Footer from '../components/Footer.vue'
+// import Footer from '../components/Footer.vue'
 
 export default {
   components: {
     Header,
-    Footer,
+    // Footer,
   },
   data() {
     return {
@@ -30,9 +30,15 @@ export default {
     showHeader() {
       return this.$store.state.showHeader
     },
-    showFooter(){
+    showFooter() {
       return this.$store.state.showFooter
-    }
+    },
   },
 }
 </script>
+
+<style>
+.main {
+  background-color: antiquewhite;
+}
+</style>
