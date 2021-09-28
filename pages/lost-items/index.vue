@@ -35,7 +35,7 @@
                     prepend-icon="mdi-map-marker"
                     label="1.見つけた場所"
                     class="centered-input"
-                    placeholder="渋谷のマクドナルド..."
+                    placeholder="(例)〇〇のマクドナルド... "
                     :hint="foundLocation"
                     persistent-hint
                     required
@@ -110,8 +110,7 @@
                     v-model="itemDestination"
                     label="2.落とし物の現在地"
                     class="centered-input"
-                    clearable
-                    placeholder="〇〇の交番、見つけた場所にある"
+                    placeholder="(例)〇〇の交番,,,見つけた場所にある"
                     :hint="itemDestination"
                     persistent-hint
                     required
@@ -173,24 +172,33 @@
 
         <!-- 落とし物の現在地入力欄 -->
         <v-row row justify-center align-center>
-          <v-col cols="12" class="d-flex justify-center">
-            <v-textarea
-              v-model="itemDestinationDetails"
-              label="落とし物の詳細位置情報"
-              class="centered-input"
-              :hide-details="true"
-              auto-grow
-              clearable
-              rows="3"
-              outlined
-              placeholder="マクドの２階の窓側席... 、〇〇の近くにあるよ"
-            />
+          <v-col class="justify-center">
+            <ValidationProvider
+              v-slot="{ errors }"
+              name="落とし物の詳細位置情報"
+              rules="required"
+            >
+              <v-textarea
+                v-model="itemDestinationDetails"
+                label="3.落とし物の詳細位置情報"
+                class="centered-input"
+                hint="具体的な発見場所を書いてください"
+                persistent-hint
+                auto-grow
+                clearable
+                rows="3"
+                outlined
+                placeholder="(例)マクドナルドの２階の窓側席...〇〇の近くにあるよ"
+                required
+                :error-messages="errors"
+              />
+            </ValidationProvider>
           </v-col>
         </v-row>
 
         <!-- 持ち主に知らせるボタン -->
         <v-row justify="center">
-          <v-col cols="6">
+          <v-col cols="1">
             <v-btn color="primary" type="submit"
               ><v-icon left>mdi-account-arrow-left</v-icon
               >持ち主に知らせる!</v-btn
@@ -393,17 +401,27 @@ export default {
           }
         )
         if (Response.notificated) {
-          const Key = localStorage.getItem('my-key')
-          const Item = await JSON.parse(Key)
+          const Key = localStorage.getItem('item_referer')
+          const ItemID = await JSON.parse(Key)
           await this.$store.dispatch('lost_item/updateItem', {
-            itemId: Item.lost_item.lostItemData.item.id,
+            itemId: ItemID,
             item: {
               isValid: false,
             },
           })
+          await this.$store.dispatch(
+            'lost_item_infomation/postLostItemInfomation',
+            {
+              lostItemInfomation: {
+                item_id: ItemID,
+                found_location: this.foundLocation,
+                item_destination_details: this.itemDestinationDetails,
+              },
+            }
+          )
           this.dlg.isOpen = true
           this.dlg.msg =
-            '持ち主にお知らせしました! ご協力ありがとうございます！'
+            '持ち主へ通知が完了しました! ご協力ありがとうございます！'
           this.dlg.type = 'success'
           setTimeout(() => {
             this.$router.push('/')
