@@ -154,7 +154,7 @@ export default {
     clientID: VUE_APP_AUTH0_CRIENT_ID,
   },
   env: {
-    domain: process.env.VUE_APP_AUTH0_DOMAIN,
-    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+    domain: VUE_APP_AUTH0_DOMAIN,
+    clientID: VUE_APP_AUTH0_CRIENT_ID,
   },
 }
