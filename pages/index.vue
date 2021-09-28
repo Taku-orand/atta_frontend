@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="12">
           <h1>ATTAで落とし物を見つけよう！</h1>
-          <h2>みんなで協力して優しい世界を作ろう!</h2>
+          <h2>みんなで協力して持ち主に届けよう！</h2>
         </v-col>
       </v-row>
       <v-row>
@@ -12,7 +12,7 @@
           <h2></h2>
           <nuxt-link class="button is-primary" to="/login">
             <span class="icon"><i class="fa fa-sign-in"></i></span>
-            <span>ログインする!</span>
+            <span>使ってみる!</span>
           </nuxt-link>
         </v-col>
       </v-row>
@@ -24,24 +24,21 @@
 export default {
   mounted() {
     this.$store.commit('setShowUserInfo', false)
-    if(this.loggedIn()){
-      this.$router.push('/items')
-    }
   },
   methods: {
     loggedIn() {
       return this.$auth0.isAuthenticated()
     },
-    async ping() {
-      const ret = await this.$axios.$get('/api/v1/ping')
-      console.log(ret)
-    },
-    async secured() {
-      const ret = await this.$axios.$get('/api/v1/secured', {
-        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-      })
-      console.log(ret)
-    },
+    // async ping() {
+    //   const ret = await this.$axios.$get('/api/v1/ping')
+    //   console.log(ret)
+    // },
+    // async secured() {
+    //   const ret = await this.$axios.$get('/api/v1/secured', {
+    //     headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+    //   })
+    //   console.log(ret)
+    // },
   },
 }
 </script>

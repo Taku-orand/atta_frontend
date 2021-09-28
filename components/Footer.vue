@@ -1,13 +1,15 @@
 <template>
-    <v-footer app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+  <v-footer>
+    <div class="footer">&copy; {{ new Date().getFullYear() }} Takuya</div>
+  </v-footer>
 </template>
 
 <script>
-
-export default {
-  components: {
-  },
-}
+export default {}
 </script>
+<style>
+.footer {
+  margin: 0 auto 0.75rem;
+  padding: 0;
+}
+</style>
