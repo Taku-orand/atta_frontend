@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const { VUE_APP_AUTH0_DOMAIN, VUE_APP_AUTH0_CRIENT_ID } = process.env
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
@@ -138,22 +139,22 @@ export default {
         : undefined,
     domain:
       process.env.NODE_ENV !== 'production'
-        ? process.env.VUE_APP_AUTH0_DOMAIN
+        ? VUE_APP_AUTH0_DOMAIN
         : undefined,
     clientID:
       process.env.NODE_ENV !== 'production'
-        ? process.env.VUE_APP_AUTH0_CRIENT_ID
+        ? VUE_APP_AUTH0_CRIENT_ID
         : undefined,
   },
 
   privateRuntimeConfig: {
     VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
     VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
-    domain: process.env.VUE_APP_AUTH0_DOMAIN,
-    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+    domain: VUE_APP_AUTH0_DOMAIN,
+    clientID: VUE_APP_AUTH0_CRIENT_ID,
   },
   env: {
     domain: process.env.VUE_APP_AUTH0_DOMAIN,
     clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
-  }
+  },
 }
