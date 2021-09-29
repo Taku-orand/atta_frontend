@@ -18,6 +18,7 @@
               color="primary"
               dark
               v-bind="attrs"
+              small
               @click="userInfoIsChanged"
               v-on="on"
             >

@@ -112,9 +112,7 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
         },
-        light: {
-          
-        }
+        light: {},
       },
     },
   },
@@ -153,6 +151,10 @@ export default {
   privateRuntimeConfig: {
     VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
     VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+  },
+  env: {
     domain: process.env.VUE_APP_AUTH0_DOMAIN,
     clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
   },

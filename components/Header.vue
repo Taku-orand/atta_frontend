@@ -1,20 +1,21 @@
 <template>
   <v-app-bar fixed app>
     <div v-if="!showHistory">
-      <v-row justify="center">
-        <v-col>
-          <NuxtLink :to="itemListUrl">
-            <v-toolbar-title v-text="title" />
-          </NuxtLink>
+      <v-row>
+        <v-col cols="2">
+          <v-btn x-small depressed disabled class="mt-1 ml-6">
+            <NuxtLink :to="itemListUrl">
+              <img src="~/assets/logo.png" />
+            </NuxtLink>
+          </v-btn>
         </v-col>
         <v-spacer />
-        <v-col>
+        <v-col cols="4">
           <Settings v-if="showUserInfo"></Settings>
         </v-col>
-        <v-spacer />
-        <v-col>
+        <v-col cols="4">
           <NuxtLink v-if="showUserInfo" to="/logout">
-            <v-btn class="error">ログアウト</v-btn>
+            <v-btn small class="error">ログアウト</v-btn>
           </NuxtLink>
         </v-col>
       </v-row>
@@ -34,7 +35,6 @@ export default {
   },
   data() {
     return {
-      title: 'AttA',
       itemListUrl: '/items',
     }
   },
@@ -56,3 +56,10 @@ export default {
   },
 }
 </script>
+
+<style>
+img {
+  height: 4.5rem;
+  width: 5rem;
+}
+</style>
