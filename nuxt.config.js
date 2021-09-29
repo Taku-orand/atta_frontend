@@ -61,7 +61,7 @@ export default {
   manifest: {
     name: 'ATTA 落とし物発見サービス',
     lang: 'ja',
-    short_name: 'ATTA 落とし物発見サービス',
+    short_name: 'ATTA',
     title: 'ATTA 落とし物発見サービス',
     'og:title': 'ATTA 落とし物発見サービス',
     description: 'ATTAはみんなの協力で落とし物を見つけるサービスです',
