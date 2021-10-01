@@ -19,10 +19,13 @@ export const mutations = {
 export const actions = {
   async getLostItem({ commit }, lostItemId) {
     await axios
-      .get(`http://localhost:3000/api/v1/lost_items/${lostItemId}`, {
-        headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
-        withCredentials: true,
-      })
+      .get(
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/lost_items/${lostItemId}`,
+        {
+          headers: { Authorization: 'Bearer ' + this.$auth0.getIdToken() },
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         if (response.data.found) {
           // 見つかりました。
@@ -37,29 +40,35 @@ export const actions = {
   },
   postNotification({ commit }, lostItemData) {
     // indexjsに移動
-    axios
-      .post(
-        `http://localhost:3000/api/v1/lost_items`,
-        {
-          lostItemData,
-        },
-        { withCredentials: true }
-      )
-      .then((response) => {
-        if (response.data.created) {
-          // 通知成功
-        } else {
-          // 通知失敗
-        }
-      })
-      .catch((e) => {
-        console.log(e)
-      })
+    return this.$axios.$post(
+      this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/lost_items`,
+      {
+        lostItemData,
+      },
+      { withCredentials: true }
+    )
   },
   isValidQRCode({ commit }, params) {
     return this.$axios.$post(
-      `http://localhost:3000/api/v1/lost_items/verificate_qrcode`,
-      {item: { id: params.id, verification_id: params.vid }}
+      this.$config.VUE_APP_ATTA_BACKEND +
+        `/api/v1/lost_items/verificate_qrcode`,
+      { item: { id: params.id, verification_id: params.vid } }
     )
+  },
+  async updateItem({ commit }, { itemId, item }) {
+    try {
+      const Item = await this.$axios.$patch(
+        this.$config.VUE_APP_ATTA_BACKEND + `/api/v1/lost_items/${itemId}`,
+        { item },
+        {
+          withCredentials: true,
+        }
+      )
+      if (Item.updated) {
+        // 成功
+      }
+    } catch (e) {
+      console.log(e)
+    }
   },
 }

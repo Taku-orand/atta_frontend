@@ -3,17 +3,22 @@
     <Notification
       :msg="dlg.msg"
       :is-open="dlg.isOpen"
-      :mode="dlg.mode"
+      :type="dlg.type"
     ></Notification>
     <v-container>
       <v-row justify="center">
-        <v-dialog v-model="dialog" :persistent="!isValid" max-width="600px">
+        <v-dialog
+          v-model="dialog"
+          :persistent="!isValid || userInStore.initial"
+          max-width="600px"
+        >
           <template #activator="{ on, attrs }">
             <v-btn
               id="userInfo"
               color="primary"
               dark
               v-bind="attrs"
+              small
               @click="userInfoIsChanged"
               v-on="on"
             >
@@ -24,6 +29,11 @@
           <ValidationObserver ref="userForm" v-slot="{ invalid }">
             <v-form v-model="isValid" @submit.prevent="submit">
               <v-card>
+                <div v-show="userInStore.initial" class="text-overline">
+                  <v-chip class="ma-2" color="green" text-color="white">
+                    初期設定
+                  </v-chip>
+                </div>
                 <v-card-title>
                   <span class="text-h5">ユーザー情報</span>
                 </v-card-title>
@@ -88,6 +98,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
+                    v-show="!userInStore.initial"
                     :disabled="invalid"
                     color="blue darken-1"
                     text
@@ -122,7 +133,7 @@ export default {
       dlg: {
         msg: '',
         isOpen: false,
-        mode: '',
+        type: '',
       },
     }
   },
@@ -151,6 +162,9 @@ export default {
         this.introduction = introduction
       },
     },
+    userInStore() {
+      return this.$store.getters['user/userGetter']
+    },
   },
   methods: {
     setOriginEmail() {
@@ -171,15 +185,14 @@ export default {
         })
         if (Response.updated) {
           this.dlg.msg = '設定が完了しました.'
-          this.dlg.mode = 'success'
+          this.dlg.type = 'success'
           this.dlg.isOpen = true
           await this.$store.dispatch('user/getUser')
           this.closeDialog()
         } else {
           this.dlg.msg = '保存に失敗しました. もう一度お試しください.'
-          this.dlg.mode = 'error'
+          this.dlg.type = 'error'
           this.dlg.isOpen = true
-          this.dlg.mode = 'error'
         }
         setTimeout(() => {
           this.dlg.isOpen = false

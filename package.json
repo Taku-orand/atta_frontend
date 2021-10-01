@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development HOST=0.0.0.0 PORT=3333 nuxt",
+    "dev2": "PORT=3333 nuxt",
+    "dev": "nuxt",
+    "heroku-postbuild": "npm run build",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -23,13 +25,13 @@
     "query-string": "^4.3.4",
     "vee-validate": "^3.4.13",
     "vue2-google-maps": "^0.10.7",
-    "vuetify": "^2.5.5",
-    "vuex-persistedstate": "^4.0.0"
+    "vuetify": "^2.5.5"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",
     "@nuxtjs/eslint-config": "^6.0.1",
     "@nuxtjs/eslint-module": "^3.0.2",
+    "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/vuetify": "^1.12.1",
     "cross-env": "^7.0.3",
     "eslint": "^7.29.0",

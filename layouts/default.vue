@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <Header v-if="showHeader"></Header>
 
     <v-main>
@@ -30,9 +30,15 @@ export default {
     showHeader() {
       return this.$store.state.showHeader
     },
-    showFooter(){
+    showFooter() {
       return this.$store.state.showFooter
-    }
+    },
+    showHistory() {
+      if (this.$route.path === `/items/${this.$route.params.id}`) {
+        return true
+      }
+      return false
+    },
   },
 }
 </script>

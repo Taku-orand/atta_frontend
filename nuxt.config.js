@@ -1,5 +1,6 @@
 import colors from 'vuetify/es5/util/colors'
-const { VUE_APP_GOOGLE_API_KEY } = process.env
+const { VUE_APP_AUTH0_DOMAIN, VUE_APP_AUTH0_CRIENT_ID } = process.env
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -7,9 +8,9 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - atta_frontend',
-    title: 'atta_frontend',
+    title: 'ATTA 落とし物発見サービス',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'ja',
     },
     meta: [
       { charset: 'utf-8' },
@@ -36,15 +37,14 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '~/plugins/auth0.js' },
-    // サーバーサイドでは使用できないのでssrはfalseにすること
-    { src: '~/plugins/persistedstate.js', ssr: false },
     { src: '~/plugins/vee-validate.js' },
     { src: '~/plugins/vue2-google-maps.js' },
+    // { src: '~/plugins/notifications-client', ssr: false },
   ],
 
   auth0: {
-    domain: 'dev-w0-rzoqk.jp.auth0.com',
-    clientID: '3GyZvQ1eR3GTObkONiIOg3fhuas66vqW',
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
   },
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -56,7 +56,20 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/vuetify
     '@nuxtjs/vuetify',
+    '@nuxtjs/pwa',
   ],
+
+  manifest: {
+    name: 'ATTA 落とし物発見サービス',
+    lang: 'ja',
+    short_name: 'ATTA',
+    title: 'ATTA 落とし物発見サービス',
+    'og:title': 'ATTA 落とし物発見サービス',
+    description: 'ATTAはみんなの協力で落とし物を見つけるサービスです',
+    'og:description': 'ATTAはみんなの協力で落とし物を見つけるサービスです',
+    theme_color: '#163956',
+    background_color: '#163956',
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -99,6 +112,7 @@ export default {
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
         },
+        light: {},
       },
     },
   },
@@ -114,7 +128,34 @@ export default {
     dir: './public',
   },
 
+  publicRuntimeConfig: {
+    VUE_APP_ATTA_FRONTEND: process.env.VUE_APP_ATTA_FRONTEND,
+    VUE_APP_GOOGLE_API_KEY:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_GOOGLE_API_KEY
+        : undefined,
+    VUE_APP_ATTA_BACKEND:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_ATTA_BACKEND
+        : undefined,
+    domain:
+      process.env.NODE_ENV !== 'production'
+        ? process.env.VUE_APP_AUTH0_DOMAIN
+        : undefined,
+    clientID:
+      process.env.NODE_ENV !== 'production'
+        ? VUE_APP_AUTH0_CRIENT_ID
+        : undefined,
+  },
+
+  privateRuntimeConfig: {
+    VUE_APP_GOOGLE_API_KEY: process.env.VUE_APP_GOOGLE_API_KEY,
+    VUE_APP_ATTA_BACKEND: process.env.VUE_APP_ATTA_BACKEND,
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
+  },
   env: {
-    VUE_APP_GOOGLE_API_KEY,
+    domain: process.env.VUE_APP_AUTH0_DOMAIN,
+    clientID: process.env.VUE_APP_AUTH0_CRIENT_ID,
   },
 }
