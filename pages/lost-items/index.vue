@@ -220,7 +220,7 @@ export default {
       maplocation2: { lng: 0, lat: 0 },
       currentLocation1: { lng: 0, lat: 0 },
       currentLocation2: { lng: 0, lat: 0 },
-      zoom: 15,
+      zoom: 6,
       styleMap: {
         width: '100%',
         height: '400px',
