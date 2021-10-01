@@ -206,14 +206,15 @@ export default {
 
   mounted() {
     this.$store.commit('isLoggedIn')
+    const Item = this.$store.getters['item/itemGetter']
+    this.tempName = Item.name
+    this.tempContent = Item.content
     this.lostItemInfomationsTemp =
       this.$store.getters['lost_item_infomation/lostItemInfomationsGetter']
   },
 
   methods: {
     doEdit() {
-      this.tempName = this.item.name
-      this.tempContent = this.item.content
       this.edit = true
     },
     closeDelete() {
@@ -247,14 +248,7 @@ export default {
       })
       this.doneEdit()
     },
-    editItem() {
-      this.tempName = this.item.name
-      this.tempContent = this.item.content
-      this.edit = true
-    },
     doneEdit() {
-      this.tempName = ''
-      this.tempContent = ''
       this.edit = false
     },
     qrCodeUpdateConfirm() {
