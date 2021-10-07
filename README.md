@@ -4,9 +4,9 @@
   このアプリケーションは、よく落とし物をする方のためサービスです。
 # URL
 
-アプリケーション： https://aizu-connect.herokuapp.com
+アプリケーション： https://atta-app.herokuapp.com
 
-バックエンド(Github)： https://github.com/Takuyazzz/connect-backend
+バックエンド(Github)： https://github.com/Takuyazzz/atta_backend
 
 # テスト用アカウント
 
