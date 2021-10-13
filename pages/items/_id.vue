@@ -46,6 +46,9 @@
 
     <!-- QRコード生成ボタン -->
     <v-row class="justify-end">
+      <v-col cols="12">
+        <v-slider v-model="wid" max="400" min="100" label="サイズ変更"></v-slider>
+      </v-col>
       <v-col>
         <v-text-field
           v-model="wid"
@@ -85,8 +88,8 @@
 
     <!-- QRCODE -->
     <v-row class="justify-center">
-      <div v-if="item.qr_code">
-        <img :src="item.qr_code" />
+      <div v-if="item.qr_code" >
+        <v-img :src="item.qr_code" :max-height="wid" :max-width="wid" />
       </div>
     </v-row>
 
